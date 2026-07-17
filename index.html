@@ -3,260 +3,237 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi Libro Digital - StPageFlip Demo</title>
-<meta name="description" content="Flipbook interactivo con StPageFlip">
+<title>Mi Libro Digital</title>
+<meta name="description" content="Flipbook interactivo con imagenes reales del libro">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500&family=Lora:ital@1&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0b0c1a;--accent:#c9a84c;--accent-lt:#e8c96d;--accent-dim:#8a6a28;--muted:#9a8f72;--page:#fdf8ef;--page-text:#2e2418}
+:root{--bg:#0b0c1a;--accent:#c9a84c;--accent-lt:#e8c96d;--accent-dim:#8a6a28;--muted:#9a8f72}
 html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:#f0ead8;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(80,60,160,.35),transparent 70%),radial-gradient(ellipse 60% 40% at 20% 80%,rgba(30,20,80,.4),transparent 60%)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(80,60,160,.35),transparent 70%),
+             radial-gradient(ellipse 60% 40% at 20% 80%,rgba(30,20,80,.4),transparent 60%)}
 #particles{position:fixed;inset:0;z-index:0;pointer-events:none}
 .wrapper{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center}
-header{width:100%;padding:2rem 2rem 1rem;text-align:center}
-.eyebrow{font-size:.7rem;font-weight:500;letter-spacing:.35em;text-transform:uppercase;color:var(--accent);opacity:.8;margin-bottom:.6rem}
-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,4vw,2.8rem);font-weight:700;background:linear-gradient(135deg,var(--accent-lt) 20%,var(--accent) 60%,var(--accent-dim));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.04em}
-header p.sub{margin-top:.5rem;font-size:.85rem;color:var(--muted);font-family:'Lora',serif;font-style:italic}
-.divider{width:120px;height:1px;margin:1rem auto;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
-.stage{position:relative;display:flex;flex-direction:column;align-items:center;padding:1rem 1rem 2rem;width:100%;flex:1}
-#book-container{filter:drop-shadow(0 40px 60px rgba(0,0,0,.6))}
-.page{background:var(--page);color:var(--page-text);overflow:hidden;user-select:none}
-.page.cover-front,.page.cover-back{background:#0d0e22}
-.cover-inner{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#1a1040,#0d0e22 50%,#1a0e35);position:relative;overflow:hidden}
-.cover-inner::before{content:'';position:absolute;width:200%;height:200%;top:-50%;left:-50%;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(201,168,76,.15),transparent 70%)}
-.cover-ornament{width:60%;max-width:180px;opacity:.85;margin-bottom:1.2rem}
-.cover-title{font-family:'Cinzel',serif;font-size:clamp(.9rem,3vw,1.6rem);font-weight:700;color:var(--accent-lt);text-align:center;letter-spacing:.1em;line-height:1.3;z-index:1;padding:0 1rem}
-.cover-subtitle{font-family:'Lora',serif;font-style:italic;font-size:clamp(.55rem,1.5vw,.8rem);color:var(--accent-dim);margin-top:.6rem;letter-spacing:.08em;z-index:1}
-.cover-rule{width:40%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:.8rem 0;z-index:1}
-.page-inner{width:100%;height:100%;display:flex;flex-direction:column;padding:8% 10%;background:var(--page);position:relative;overflow:hidden}
-.page-inner::before{content:'✦';position:absolute;top:8px;left:10px;font-size:.7rem;color:var(--accent-dim);opacity:.5}
-.page-inner::after{content:'✦';position:absolute;bottom:8px;right:10px;font-size:.7rem;color:var(--accent-dim);opacity:.5}
-.page-number{position:absolute;bottom:8px;font-family:'Cinzel',serif;font-size:.55rem;color:var(--accent-dim);letter-spacing:.2em;left:50%;transform:translateX(-50%)}
-.page-chapter{font-family:'Cinzel',serif;font-size:clamp(.55rem,1.5vw,.75rem);font-weight:600;color:var(--accent-dim);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
-.page-title{font-family:'Cinzel',serif;font-size:clamp(.85rem,2.2vw,1.25rem);font-weight:700;color:#2e2418;line-height:1.3;margin-bottom:.6rem}
-.page-rule{width:40px;height:2px;background:var(--accent);margin-bottom:.9rem;border-radius:2px}
-.page-body{font-family:'Lora',serif;font-size:clamp(.62rem,1.6vw,.84rem);line-height:1.8;color:#4a3c28;flex:1}
-.page-body p+p{margin-top:.6em}
-.page-body em{color:#7a5c2e}
-.pull-quote{border-left:3px solid var(--accent);padding:.5rem .8rem;margin:.6rem 0;font-family:'Lora',serif;font-style:italic;font-size:clamp(.65rem,1.7vw,.85rem);color:#5a4030;background:rgba(201,168,76,.07);border-radius:0 4px 4px 0}
-.controls{display:flex;align-items:center;gap:1rem;margin-top:1.8rem;flex-wrap:wrap;justify-content:center}
-.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.6rem 1.4rem;border-radius:50px;border:1px solid rgba(201,168,76,.4);background:rgba(201,168,76,.08);color:var(--accent-lt);font-family:'Inter',sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:all .2s;backdrop-filter:blur(6px)}
-.btn:hover{background:rgba(201,168,76,.18);border-color:var(--accent);box-shadow:0 0 18px rgba(201,168,76,.25);transform:translateY(-1px)}
+
+header{width:100%;padding:1.4rem 2rem .6rem;text-align:center}
+.eyebrow{font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);opacity:.8;margin-bottom:.4rem}
+header h1{font-family:'Cinzel',serif;font-size:clamp(1.3rem,3vw,2.2rem);font-weight:700;
+  background:linear-gradient(135deg,var(--accent-lt) 20%,var(--accent) 60%,var(--accent-dim));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.06em}
+.divider{width:90px;height:1px;margin:.6rem auto;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+
+.stage{position:relative;display:flex;flex-direction:column;align-items:center;padding:.4rem 1rem 1.2rem;width:100%;flex:1}
+#book-container{filter:drop-shadow(0 25px 55px rgba(0,0,0,.75))}
+
+/* ─── PAGES ────────────────────────────────────────
+   Spread original: 2500 x 1250 px  (ratio 2:1)
+   Cada pagina:     1250 x 1250 px  (ratio 1:1 cuadrado)
+   Se usa background-size:200% 100% para mostrar
+   solo la mitad izquierda o derecha del spread.
+────────────────────────────────────────────────── */
+.page{
+  overflow:hidden;
+  user-select:none;
+  background:#0d0d1a;
+}
+.page-half{
+  width:100%;
+  height:100%;
+  /* La imagen se estira al doble del ancho del contenedor
+     para que cada mitad cubra exactamente una pagina */
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+}
+.page-half.left { background-position: 0% 0%; }
+.page-half.right{ background-position: 100% 0%; }
+
+/* ─── Controls ── */
+.controls{display:flex;align-items:center;gap:.7rem;margin-top:1.2rem;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:.38rem;padding:.5rem 1.2rem;border-radius:50px;
+  border:1px solid rgba(201,168,76,.38);background:rgba(201,168,76,.07);color:var(--accent-lt);
+  font-family:'Inter',sans-serif;font-size:.78rem;font-weight:500;letter-spacing:.04em;
+  cursor:pointer;transition:all .18s;backdrop-filter:blur(6px)}
+.btn:hover{background:rgba(201,168,76,.2);border-color:var(--accent);
+  box-shadow:0 0 16px rgba(201,168,76,.28);transform:translateY(-1px)}
 .btn:active{transform:translateY(0)}
-.btn svg{width:16px;height:16px;fill:currentColor}
-.page-indicator{font-family:'Cinzel',serif;font-size:.78rem;color:var(--muted);letter-spacing:.12em;min-width:90px;text-align:center}
-.progress-wrap{width:min(700px,90vw);margin-top:.8rem}
-.progress-track{height:3px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent-dim),var(--accent-lt));border-radius:4px;width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
-footer{width:100%;text-align:center;padding:1.5rem 1rem 2rem;font-size:.72rem;color:rgba(154,143,114,.4);letter-spacing:.1em}
-.hint{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--muted);opacity:.7;margin-top:.6rem;font-family:'Lora',serif;font-style:italic}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-.anim-in{animation:fadeInUp .7s ease both}
+.btn svg{width:15px;height:15px;fill:currentColor}
+.btn:disabled{opacity:.28;cursor:not-allowed;pointer-events:none}
+.btn.icon-only{padding:.5rem .75rem}
+
+.page-indicator{font-family:'Cinzel',serif;font-size:.74rem;color:var(--muted);
+  letter-spacing:.1em;min-width:130px;text-align:center;line-height:1.4}
+
+.progress-wrap{width:min(700px,90vw);margin-top:.6rem}
+.progress-track{height:3px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent-dim),var(--accent-lt));
+  border-radius:4px;width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+.hint{font-size:.65rem;color:var(--muted);opacity:.55;margin-top:.45rem;
+  font-family:'Lora',serif;font-style:italic;text-align:center}
+footer{width:100%;text-align:center;padding:.8rem 1rem 1.2rem;
+  font-size:.65rem;color:rgba(154,143,114,.3);letter-spacing:.1em}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.anim-in{animation:fadeInUp .55s ease both}
+.d1{animation-delay:.08s}.d2{animation-delay:.16s}
 </style>
 </head>
 <body>
 <canvas id="particles"></canvas>
 <div class="wrapper">
+
 <header class="anim-in">
-  <div class="eyebrow">Demostracion Interactiva</div>
-  <h1>Mi Libro Digital</h1>
-  <p class="sub">Una experiencia de lectura inmersiva con StPageFlip</p>
+  <div class="eyebrow">Libro Digital Interactivo</div>
+  <h1>Mi Libro</h1>
   <div class="divider"></div>
 </header>
-<div class="stage anim-in">
+
+<div class="stage anim-in d1">
   <div id="book-container">
-    <div id="book">
-      <div class="page cover-front" data-density="hard">
-        <div class="cover-inner">
-          <svg class="cover-ornament" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="100" r="90" stroke="#c9a84c" stroke-width="1" stroke-dasharray="4 4"/>
-            <circle cx="100" cy="100" r="75" stroke="#c9a84c" stroke-width=".5" opacity=".6"/>
-            <path d="M100 20 L108 92 L180 100 L108 108 L100 180 L92 108 L20 100 L92 92 Z" fill="none" stroke="#c9a84c" stroke-width="1.2"/>
-            <circle cx="100" cy="100" r="12" fill="#c9a84c" opacity=".3"/>
-            <circle cx="100" cy="100" r="6" fill="#c9a84c" opacity=".7"/>
-          </svg>
-          <div class="cover-rule"></div>
-          <div class="cover-title">Mi Libro<br>Digital</div>
-          <div class="cover-rule" style="margin-top:.8rem"></div>
-          <div class="cover-subtitle">Una historia de luz y sombra</div>
-        </div>
-      </div>
-      <div class="page">
-        <div class="page-inner">
-          <div class="page-chapter">Prologo</div>
-          <div class="page-title">El Comienzo de Todo</div>
-          <div class="page-rule"></div>
-          <div class="page-body">
-            <p>Habia una vez un mundo donde las paginas cobraban vida al ser tocadas. Cada hoja guardaba en su interior un universo completo, esperando el instante preciso para desplegarse ante los ojos del lector.</p>
-            <div class="pull-quote">"Los libros son espejos: solo vemos en ellos lo que ya llevamos dentro."</div>
-            <p>En ese lugar sin nombre ni coordenadas, vivia una pequeña biblioteca que nadie habia visitado en anos. Sus anaqueles de madera oscura sostenian volumenes cuyas portadas relucian con una luz propia, tenue y dorada.</p>
-            <p>Un dia, una mano curiosa abrio la primera pagina...</p>
-          </div>
-          <div class="page-number">I</div>
-        </div>
-      </div>
-      <div class="page">
-        <div class="page-inner">
-          <div class="page-chapter">Capitulo I</div>
-          <div class="page-title">La Biblioteca Olvidada</div>
-          <div class="page-rule"></div>
-          <div class="page-body">
-            <p>El polvo flotaba en suspension perfecta, detenido en el tiempo, como si el aire mismo hubiera decidido guardar silencio para no perturbar la paz del lugar. Las ventanas altas dejaban pasar rayos de luz oblicuos que trazaban caminos de oro.</p>
-            <p>Elena avanzo entre los estantes con cautela. Sus dedos rozaban los lomos de los libros sin atreverse a sacar ninguno. Era como si supiera que abrir uno de ellos cambiaria todo para siempre.</p>
-            <p>Entonces lo vio. Un libro delgado, encuadernado en cuero azul oscuro, con letras doradas que parecian moverse cuando uno intentaba leerlas.</p>
-          </div>
-          <div class="page-number">II</div>
-        </div>
-      </div>
-      <div class="page">
-        <div class="page-inner">
-          <div class="page-chapter">Capitulo II</div>
-          <div class="page-title">Las Palabras que Danzan</div>
-          <div class="page-rule"></div>
-          <div class="page-body">
-            <p>La primera linea del libro decia: <em>"Todo lo que leas aqui habra sucedido."</em> Elena fruncio el ceno. Las palabras cambiaban de lugar mientras parpadeaba, reordenandose en frases que nunca terminaban de tener sentido.</p>
-            <div class="pull-quote">"El idioma de los suenos no necesita gramatica."</div>
-            <p>Paso una pagina. Y otra. Cada una revelaba un fragmento de un mundo reconocible sin haberlo visitado jamas: montanas de cristal, rios que fluian hacia arriba, ciudades sobre nubes.</p>
-            <p>No supo cuanto tiempo estuvo leyendo. Cuando levanto la vista, la biblioteca habia desaparecido.</p>
-          </div>
-          <div class="page-number">III</div>
-        </div>
-      </div>
-      <div class="page">
-        <div class="page-inner">
-          <div class="page-chapter">Capitulo III</div>
-          <div class="page-title">El Pais de las Paginas</div>
-          <div class="page-rule"></div>
-          <div class="page-body">
-            <p>Estaba de pie sobre una colina de papel. El viento doblaba las hojas como olas y el horizonte se dibujaba con lineas de tinta fresca. Cada paso que daba dejaba una huella impresa en el suelo.</p>
-            <p>A lo lejos, una figura avanzaba hacia ella. Un anciano de cabello blanco que llevaba bajo el brazo un libro identico al que ella habia abierto.</p>
-            <p>--Te estaba esperando --dijo cuando estuvo cerca--. Aqui todos los lectores terminan llegando tarde o temprano.</p>
-          </div>
-          <div class="page-number">IV</div>
-        </div>
-      </div>
-      <div class="page">
-        <div class="page-inner">
-          <div class="page-chapter">Capitulo IV</div>
-          <div class="page-title">El Guardian de las Historias</div>
-          <div class="page-rule"></div>
-          <div class="page-body">
-            <p>El anciano se llamaba a si mismo el Guardian. Llevaba siglos reuniendo los fragmentos de historias que los lectores abandonaban a mitad: personajes sin final, tramas inconclusas, mundos a medias construidos.</p>
-            <p>--Por que no terminan sus libros? --pregunto Elena.</p>
-            <p>--Porque el final da miedo --respondio el--. Terminar un libro significa aceptar que esa realidad ya no crecera mas.</p>
-            <div class="pull-quote">"Un libro sin final es una puerta entreabierta hacia lo infinito."</div>
-          </div>
-          <div class="page-number">V</div>
-        </div>
-      </div>
-      <div class="page">
-        <div class="page-inner">
-          <div class="page-chapter">Capitulo V</div>
-          <div class="page-title">El Regreso</div>
-          <div class="page-rule"></div>
-          <div class="page-body">
-            <p>El Guardian le enseno a Elena como los mundos se tejian con palabras y como cada lector era tambien un autor sin saberlo. Cada imagen que se formaba en su mente al leer era una creacion suya, unica e irrepetible.</p>
-            <p>--Ningun libro es igual para dos personas --explico--. Tu escribes mientras lees.</p>
-            <p>Cuando llego el momento de volver, Elena cerro los ojos. Sintio el suelo de papel disolverse bajo sus pies. Abrio los ojos. Estaba de nuevo en la biblioteca.</p>
-          </div>
-          <div class="page-number">VI</div>
-        </div>
-      </div>
-      <div class="page">
-        <div class="page-inner">
-          <div class="page-chapter">Epilogo</div>
-          <div class="page-title">La Pagina en Blanco</div>
-          <div class="page-rule"></div>
-          <div class="page-body">
-            <p>Elena devolvio el libro azul a su lugar. Pero antes de soltarlo, abrio la ultima pagina. Estaba en blanco. Una invitacion.</p>
-            <p>Saco un lapiz del bolsillo y escribio una sola linea: <em>"Continuara..."</em></p>
-            <p>Salio de la biblioteca con paso ligero. Afuera, el sol pintaba el cielo de ese dorado particular que solo existe en los momentos que valen la pena recordar.</p>
-            <div class="pull-quote">"Leer es vivir varias vidas en una sola."</div>
-            <p style="text-align:center;font-family:'Cinzel',serif;font-size:.9em;margin-top:1em;color:#7a5c2e">--- Fin ---</p>
-          </div>
-          <div class="page-number">VII</div>
-        </div>
-      </div>
-      <div class="page cover-back" data-density="hard">
-        <div class="cover-inner">
-          <svg class="cover-ornament" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="100" r="80" stroke="#c9a84c" stroke-width=".8" stroke-dasharray="2 6"/>
-            <path d="M60 100 Q100 60 140 100 Q100 140 60 100Z" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity=".7"/>
-            <circle cx="100" cy="100" r="8" fill="#c9a84c" opacity=".5"/>
-          </svg>
-          <div class="cover-rule"></div>
-          <div class="cover-subtitle" style="font-size:.9rem;letter-spacing:.2em">F I N</div>
-        </div>
-      </div>
-    </div>
+    <div id="book"></div>
   </div>
-  <div class="progress-wrap">
+
+  <div class="progress-wrap anim-in d2">
     <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
   </div>
-  <div class="controls">
+
+  <div class="controls anim-in d2">
+    <button class="btn icon-only" id="btn-first" title="Primera pagina">
+      <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+    </button>
     <button class="btn" id="btn-prev">
       <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
       Anterior
     </button>
-    <span class="page-indicator" id="page-indicator">Portada</span>
+    <span class="page-indicator" id="page-indicator">...</span>
     <button class="btn" id="btn-next">
       Siguiente
-      <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+    </button>
+    <button class="btn icon-only" id="btn-last" title="Ultima pagina">
+      <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 4V8l-5.5 4zM15.5 6v12h2V6h-2z"/></svg>
     </button>
   </div>
-  <div class="hint">Haz clic en los bordes del libro o usa los botones para voltear paginas</div>
+  <div class="hint">Flechas del teclado &nbsp;&bull;&nbsp; Clic y arrastra los bordes del libro</div>
 </div>
-<footer>2026 - StPageFlip Demo</footer>
+
+<footer>Mi Libro Digital &mdash; StPageFlip</footer>
 </div>
+
 <script>
+/* ── Particles ─────────────────────────────────────── */
 (function(){
   var c=document.getElementById('particles'),ctx=c.getContext('2d'),W,H,pts;
   function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
-  function init(){pts=[];for(var i=0;i<55;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,dx:(Math.random()-.5)*.15,dy:(Math.random()-.5)*.15,o:Math.random()*.5+.1});}
+  function init(){pts=[];for(var i=0;i<50;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,dx:(Math.random()-.5)*.12,dy:(Math.random()-.5)*.12,o:Math.random()*.45+.08});}
   function draw(){ctx.clearRect(0,0,W,H);pts.forEach(function(p){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(201,168,76,'+p.o+')';ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;});requestAnimationFrame(draw);}
   resize();init();draw();
   window.addEventListener('resize',function(){resize();init();});
 })();
 
-window.addEventListener('DOMContentLoaded',function(){
-  var vw=window.innerWidth,vh=window.innerHeight;
-  var w=Math.min(Math.floor((vw-40)/2),380);
-  var h=Math.min(Math.floor(w*1.45),Math.floor(vh*.62));
-  w=Math.floor(h/1.45);
+/* ── Image spreads (sorted, sin duplicados) ─────────── */
+var spreads=[
+  'pages/page 01-02.jpg','pages/page 03-04.jpg','pages/page 05-06.jpg',
+  'pages/page 07-08.jpg','pages/page 09-10.jpg','pages/page 11-12.jpg',
+  'pages/page 13-14.jpg','pages/page 15-16.jpg','pages/page 17-18.jpg',
+  'pages/page 19-20.jpg','pages/page 21-22.jpg','pages/page 23-24.jpg',
+  'pages/page 25-26.jpg','pages/page 27-28.jpg','pages/page 35-36.jpg',
+  'pages/page 48-49.jpg','pages/page 49-50.jpg','pages/page 50-51.jpg'
+];
 
-  var pageFlip=new St.PageFlip(document.getElementById('book'),{
-    width:w, height:h,
-    showCover:true,
-    mobileScrollSupport:false,
-    maxShadowOpacity:.5,
-    flippingTime:800,
-    usePortrait:window.innerWidth<600,
-    drawShadow:true,
-    autoSize:true
+/* Dimensiones originales del spread: 2500 x 1250
+   Cada pagina individual:            1250 x 1250  (ratio 1:1)
+   Al abrir el libro (2 paginas):     2500 x 1250  (ratio 2:1) */
+var IMG_PAGE_W = 1250;
+var IMG_PAGE_H = 1250;
+var RATIO = IMG_PAGE_H / IMG_PAGE_W; // = 1.0
+
+/* ── Construir elementos .page ─────────────────────── */
+var bookEl=document.getElementById('book');
+spreads.forEach(function(src){
+  ['left','right'].forEach(function(side){
+    var div=document.createElement('div');
+    div.className='page';
+    var inner=document.createElement('div');
+    inner.className='page-half '+side;
+    inner.style.backgroundImage="url('"+src+"')";
+    div.appendChild(inner);
+    bookEl.appendChild(div);
+  });
+});
+
+/* ── Calcular tamaño optimo respetando aspect ratio ── */
+function calcSize(){
+  var vw=window.innerWidth;
+  var vh=window.innerHeight;
+  // Espacio disponible descontando header (~130px) y controles (~110px)
+  var availH = vh - 240;
+  var availW = vw - 60;
+
+  // El libro abierto mide 2 paginas de ancho → max ancho = availW
+  // Cada pagina tiene ratio RATIO (1:1), entonces alto = pageW * RATIO
+  // Queremos:  2 * pageW <= availW  y  pageH = pageW*RATIO <= availH
+  var byWidth  = Math.floor(availW / 2);
+  var byHeight = Math.floor(availH / RATIO);
+  var pageW    = Math.min(byWidth, byHeight, 650); // tope de 650px por pagina
+  var pageH    = Math.round(pageW * RATIO);
+  return {w: pageW, h: pageH};
+}
+
+/* ── Init StPageFlip ────────────────────────────────── */
+window.addEventListener('DOMContentLoaded',function(){
+  var sz=calcSize();
+
+  var pageFlip=new St.PageFlip(bookEl,{
+    width:            sz.w,
+    height:           sz.h,
+    showCover:        false,
+    mobileScrollSupport: false,
+    maxShadowOpacity: 0.55,
+    flippingTime:     650,
+    usePortrait:      false,
+    drawShadow:       true,
+    autoSize:         false   // desactivado para respetar nuestro ratio exacto
   });
 
-  pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+  pageFlip.loadFromHTML(bookEl.querySelectorAll('.page'));
 
+  /* ── UI update ─────────────────────────────────────── */
   function updateUI(){
     var cur=pageFlip.getCurrentPageIndex();
     var tot=pageFlip.getPageCount();
-    document.getElementById('progress-fill').style.width=(tot>1?Math.round(cur/(tot-1)*100):0)+'%';
-    var ind=document.getElementById('page-indicator');
-    if(cur===0)ind.textContent='Portada';
-    else if(cur===tot-1)ind.textContent='Contraportada';
-    else ind.textContent='Pagina '+cur+' de '+(tot-2);
+    var pct=tot>1?Math.round(cur/(tot-1)*100):0;
+    document.getElementById('progress-fill').style.width=pct+'%';
+
+    var spreadCur=Math.floor(cur/2)+1;
+    var spreadTot=Math.ceil(tot/2);
+    document.getElementById('page-indicator').textContent=
+      'Pagina '+spreadCur+' de '+spreadTot;
+
+    document.getElementById('btn-prev').disabled =(cur<2);
+    document.getElementById('btn-first').disabled=(cur<2);
+    document.getElementById('btn-next').disabled =(cur>=tot-2);
+    document.getElementById('btn-last').disabled =(cur>=tot-2);
   }
 
   pageFlip.on('flip',updateUI);
   pageFlip.on('init',updateUI);
+
   document.getElementById('btn-prev').addEventListener('click',function(){pageFlip.flipPrev('bottom');});
   document.getElementById('btn-next').addEventListener('click',function(){pageFlip.flipNext('bottom');});
+  document.getElementById('btn-first').addEventListener('click',function(){pageFlip.flip(0);});
+  document.getElementById('btn-last').addEventListener('click',function(){pageFlip.flip(pageFlip.getPageCount()-2);});
+
   document.addEventListener('keydown',function(e){
-    if(e.key==='ArrowRight'||e.key==='ArrowDown')pageFlip.flipNext('bottom');
-    if(e.key==='ArrowLeft'||e.key==='ArrowUp')pageFlip.flipPrev('bottom');
+    if(e.key==='ArrowRight'||e.key==='ArrowDown') pageFlip.flipNext('bottom');
+    if(e.key==='ArrowLeft' ||e.key==='ArrowUp')   pageFlip.flipPrev('bottom');
+    if(e.key==='Home') pageFlip.flip(0);
+    if(e.key==='End')  pageFlip.flip(pageFlip.getPageCount()-2);
   });
+
   updateUI();
 });
 </script>
