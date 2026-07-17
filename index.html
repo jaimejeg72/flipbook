@@ -1,241 +1,326 @@
-﻿<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi Libro Digital</title>
-<meta name="description" content="Flipbook interactivo con imagenes reales del libro">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500&family=Lora:ital@1&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0b0c1a;--accent:#c9a84c;--accent-lt:#e8c96d;--accent-dim:#8a6a28;--muted:#9a8f72}
-html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:#f0ead8;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(80,60,160,.35),transparent 70%),
-             radial-gradient(ellipse 60% 40% at 20% 80%,rgba(30,20,80,.4),transparent 60%)}
+﻿<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>StPageFlip Demo Completo</title><meta name="description" content="Demo completo StPageFlip"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script><style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080912;--bg2:#0f1022;--border:rgba(201,168,76,.18);--accent:#c9a84c;--accent-lt:#e8c96d;--accent-dk:#8a6a28;--green:#4caf82;--blue:#4c8fcf;--red:#cf6b4c;--purple:#9b6bcf;--text:#e8e0cc;--muted:#7a7260;--code:#f0c070;--pw:310px}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(60,40,140,.4),transparent 65%),radial-gradient(ellipse 40% 30% at 10% 90%,rgba(20,10,70,.5),transparent 60%)}
 #particles{position:fixed;inset:0;z-index:0;pointer-events:none}
-.wrapper{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center}
-
-header{width:100%;padding:1.4rem 2rem .6rem;text-align:center}
-.eyebrow{font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);opacity:.8;margin-bottom:.4rem}
-header h1{font-family:'Cinzel',serif;font-size:clamp(1.3rem,3vw,2.2rem);font-weight:700;
-  background:linear-gradient(135deg,var(--accent-lt) 20%,var(--accent) 60%,var(--accent-dim));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.06em}
-.divider{width:90px;height:1px;margin:.6rem auto;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
-
-.stage{position:relative;display:flex;flex-direction:column;align-items:center;padding:.4rem 1rem 1.2rem;width:100%;flex:1}
-#book-container{filter:drop-shadow(0 25px 55px rgba(0,0,0,.75))}
-
-/* ─── PAGES ────────────────────────────────────────
-   Spread original: 2500 x 1250 px  (ratio 2:1)
-   Cada pagina:     1250 x 1250 px  (ratio 1:1 cuadrado)
-   Se usa background-size:200% 100% para mostrar
-   solo la mitad izquierda o derecha del spread.
-────────────────────────────────────────────────── */
-.page{
-  overflow:hidden;
-  user-select:none;
-  background:#0d0d1a;
-}
-.page-half{
-  width:100%;
-  height:100%;
-  /* La imagen se estira al doble del ancho del contenedor
-     para que cada mitad cubra exactamente una pagina */
-  background-repeat: no-repeat;
-  background-size: 200% 100%;
-}
-.page-half.left { background-position: 0% 0%; }
-.page-half.right{ background-position: 100% 0%; }
-
-/* ─── Controls ── */
-.controls{display:flex;align-items:center;gap:.7rem;margin-top:1.2rem;flex-wrap:wrap;justify-content:center}
-.btn{display:inline-flex;align-items:center;gap:.38rem;padding:.5rem 1.2rem;border-radius:50px;
-  border:1px solid rgba(201,168,76,.38);background:rgba(201,168,76,.07);color:var(--accent-lt);
-  font-family:'Inter',sans-serif;font-size:.78rem;font-weight:500;letter-spacing:.04em;
-  cursor:pointer;transition:all .18s;backdrop-filter:blur(6px)}
-.btn:hover{background:rgba(201,168,76,.2);border-color:var(--accent);
-  box-shadow:0 0 16px rgba(201,168,76,.28);transform:translateY(-1px)}
-.btn:active{transform:translateY(0)}
-.btn svg{width:15px;height:15px;fill:currentColor}
-.btn:disabled{opacity:.28;cursor:not-allowed;pointer-events:none}
-.btn.icon-only{padding:.5rem .75rem}
-
-.page-indicator{font-family:'Cinzel',serif;font-size:.74rem;color:var(--muted);
-  letter-spacing:.1em;min-width:130px;text-align:center;line-height:1.4}
-
-.progress-wrap{width:min(700px,90vw);margin-top:.6rem}
-.progress-track{height:3px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent-dim),var(--accent-lt));
-  border-radius:4px;width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
-
-.hint{font-size:.65rem;color:var(--muted);opacity:.55;margin-top:.45rem;
-  font-family:'Lora',serif;font-style:italic;text-align:center}
-footer{width:100%;text-align:center;padding:.8rem 1rem 1.2rem;
-  font-size:.65rem;color:rgba(154,143,114,.3);letter-spacing:.1em}
-
-@keyframes fadeInUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.anim-in{animation:fadeInUp .55s ease both}
-.d1{animation-delay:.08s}.d2{animation-delay:.16s}
-</style>
-</head>
-<body>
-<canvas id="particles"></canvas>
-<div class="wrapper">
-
-<header class="anim-in">
-  <div class="eyebrow">Libro Digital Interactivo</div>
-  <h1>Mi Libro</h1>
-  <div class="divider"></div>
-</header>
-
-<div class="stage anim-in d1">
-  <div id="book-container">
-    <div id="book"></div>
-  </div>
-
-  <div class="progress-wrap anim-in d2">
-    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-  </div>
-
-  <div class="controls anim-in d2">
-    <button class="btn icon-only" id="btn-first" title="Primera pagina">
-      <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-    </button>
-    <button class="btn" id="btn-prev">
-      <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-      Anterior
-    </button>
-    <span class="page-indicator" id="page-indicator">...</span>
-    <button class="btn" id="btn-next">
-      Siguiente
-      <svg viewBox="0 0 24 24"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-    </button>
-    <button class="btn icon-only" id="btn-last" title="Ultima pagina">
-      <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 4V8l-5.5 4zM15.5 6v12h2V6h-2z"/></svg>
-    </button>
-  </div>
-  <div class="hint">Flechas del teclado &nbsp;&bull;&nbsp; Clic y arrastra los bordes del libro</div>
+.layout{position:relative;z-index:1;display:grid;grid-template-columns:1fr var(--pw);grid-template-rows:auto 1fr;height:100vh;overflow:hidden}
+.topbar{grid-column:1/-1;display:flex;align-items:center;gap:.8rem;padding:.5rem 1.1rem;background:rgba(8,9,18,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.topbar h1{font-family:'Cinzel',serif;font-size:.9rem;font-weight:700;background:linear-gradient(135deg,var(--accent-lt),var(--accent),var(--accent-dk));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.06em;white-space:nowrap}
+.badge{font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;background:rgba(201,168,76,.1);border:1px solid var(--border);color:var(--accent);padding:.16rem .5rem;border-radius:20px}
+.spacer{flex:1}
+.reinit-btn{display:flex;align-items:center;gap:.3rem;padding:.3rem .8rem;border-radius:6px;background:var(--accent);color:#1a1005;font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border:none;cursor:pointer;transition:all .18s}
+.reinit-btn:hover{background:var(--accent-lt);box-shadow:0 0 14px rgba(201,168,76,.4)}
+.reinit-btn svg{width:13px;height:13px;fill:currentColor}
+.book-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.7rem;gap:.55rem;overflow:hidden;background:var(--bg)}
+#book-container{filter:drop-shadow(0 18px 45px rgba(0,0,0,.8))}
+.nav-bar{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;justify-content:center}
+.nbtn{display:inline-flex;align-items:center;gap:.25rem;padding:.32rem .8rem;border-radius:6px;border:1px solid var(--border);background:rgba(201,168,76,.05);color:var(--accent-lt);font-size:.68rem;font-weight:500;cursor:pointer;transition:all .15s}
+.nbtn:hover{background:rgba(201,168,76,.13);border-color:var(--accent)}
+.nbtn svg{width:13px;height:13px;fill:currentColor}
+.nbtn:disabled{opacity:.22;cursor:not-allowed}
+.pg-ind{font-family:'Cinzel',serif;font-size:.68rem;color:var(--muted);letter-spacing:.1em;min-width:95px;text-align:center}
+.prog-track{width:min(440px,78vw);height:2px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent-dk),var(--accent-lt));width:0%;transition:width .35s ease}
+.hint{font-size:.58rem;color:var(--muted);font-family:'Fira Code',monospace;opacity:.55;text-align:center}
+.panel{background:var(--bg2);border-left:1px solid var(--border);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.panel::-webkit-scrollbar{width:4px}
+.panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.pcard{border-bottom:1px solid var(--border);padding:.55rem .75rem}
+.pcard-head{display:flex;align-items:center;gap:.38rem;font-size:.58rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.45rem;cursor:pointer;user-select:none}
+.ico{font-size:.72rem}
+.chev{margin-left:auto;font-size:.52rem;transition:transform .2s;color:var(--muted)}
+.pcard.collapsed .pcard-body{display:none}
+.pcard.collapsed .chev{transform:rotate(-90deg)}
+.pcard-body{display:flex;flex-direction:column;gap:.38rem}
+.row{display:flex;align-items:center;justify-content:space-between;gap:.38rem}
+.rl{font-size:.68rem;color:var(--text);flex:1;line-height:1.3}
+.rl small{display:block;font-size:.57rem;color:var(--muted);font-family:'Fira Code',monospace}
+.toggle{position:relative;width:33px;height:17px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;border-radius:9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);transition:all .2s;cursor:pointer}
+.toggle input:checked + .toggle-track{background:var(--accent);border-color:var(--accent)}
+.toggle-thumb{position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:#fff;transition:left .2s;pointer-events:none}
+.toggle input:checked ~ .toggle-thumb{left:18px}
+.sr{display:flex;flex-direction:column;gap:.22rem}
+.slr{display:flex;justify-content:space-between;align-items:center}
+.slr span{font-size:.65rem;color:var(--text)}
+.slr code{font-family:'Fira Code',monospace;font-size:.62rem;color:var(--code)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;background:rgba(255,255,255,.1);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent);cursor:pointer}
+.rg{display:flex;gap:.3rem;flex-wrap:wrap}
+.rp{position:relative}
+.rp input{position:absolute;opacity:0;width:0;height:0}
+.rp label{display:inline-flex;align-items:center;gap:.22rem;padding:.25rem .6rem;border-radius:5px;border:1px solid var(--border);font-size:.6rem;color:var(--muted);cursor:pointer;transition:all .15s;font-family:'Fira Code',monospace}
+.rp input:checked + label{background:rgba(201,168,76,.1);border-color:var(--accent);color:var(--accent-lt)}
+.rp label:hover{border-color:var(--accent-dk);color:var(--text)}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:.28rem}
+.mb{display:flex;align-items:center;justify-content:center;padding:.3rem .32rem;border-radius:5px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text);font-size:.57rem;font-family:'Fira Code',monospace;cursor:pointer;transition:all .15s;text-align:center;line-height:1.2}
+.mb:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.22)}
+.mb.g{border-color:rgba(76,175,130,.3);color:var(--green)}.mb.g:hover{background:rgba(76,175,130,.1)}
+.mb.b{border-color:rgba(76,143,207,.3);color:var(--blue)}.mb.b:hover{background:rgba(76,143,207,.1)}
+.mb.r{border-color:rgba(207,107,76,.3);color:var(--red)}.mb.r:hover{background:rgba(207,107,76,.1)}
+.mb.p{border-color:rgba(155,107,207,.3);color:var(--purple)}.mb.p:hover{background:rgba(155,107,207,.1)}
+.mb.full{grid-column:1/-1}
+.ir{display:flex;gap:.25rem;align-items:center}
+.ir input[type=number]{width:44px;padding:.25rem .3rem;border-radius:4px;border:1px solid var(--border);background:rgba(0,0,0,.35);color:var(--text);font-size:.62rem;font-family:'Fira Code',monospace;text-align:center}
+.ir input[type=number]:focus{outline:none;border-color:var(--accent)}
+.out{font-family:'Fira Code',monospace;font-size:.57rem;color:var(--code);background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:.32rem .42rem;min-height:20px;word-break:break-all;white-space:pre-wrap}
+.elog{max-height:120px;overflow-y:auto;font-family:'Fira Code',monospace;font-size:.54rem;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:.32rem;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.elog::-webkit-scrollbar{width:3px}
+.elog::-webkit-scrollbar-thumb{background:var(--border)}
+.ev{padding:.07rem 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:.3rem;align-items:baseline}
+.et{color:var(--muted);flex-shrink:0;font-size:.5rem}
+.en{flex-shrink:0}
+.ed{color:var(--text);opacity:.6;word-break:break-all}
+.lc{font-size:.54rem;color:var(--muted);background:none;border:none;cursor:pointer;float:right;margin-bottom:.22rem;font-family:'Fira Code',monospace}
+.lc:hover{color:var(--red)}
+.dt{display:inline-block;font-size:.51rem;letter-spacing:.07em;text-transform:uppercase;padding:.07rem .32rem;border-radius:3px;font-family:'Fira Code',monospace}
+.dt.s{background:rgba(76,175,130,.1);color:var(--green);border:1px solid rgba(76,175,130,.25)}
+.dt.h{background:rgba(207,107,76,.1);color:var(--red);border:1px solid rgba(207,107,76,.25)}
+.page{overflow:hidden;user-select:none;background:#0a0a15}
+.ph{width:100%;height:100%;background-repeat:no-repeat;background-size:200% 100%}
+.ph.l{background-position:0% 0%}
+.ph.r{background-position:100% 0%}
+.note{font-size:.6rem;color:var(--muted);line-height:1.5}
+</style></head><body><canvas id="particles"></canvas>
+<div class="layout">
+<div class="topbar">
+  <h1>📖 Mi Libro Digital</h1>
+  <span class="badge">StPageFlip — Demo Completo</span>
+  <div class="spacer"></div>
+  <span id="sbadge" style="font-size:.6rem;color:var(--green)">● Activo</span>
+  <button class="reinit-btn" id="gr">
+    <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-8 3.58-8 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+    Aplicar &amp; Re-init
+  </button>
 </div>
-
-<footer>Mi Libro Digital &mdash; StPageFlip</footer>
+<div class="book-stage">
+  <div id="book-container"><div id="book"></div></div>
+  <div class="prog-track"><div class="prog-fill" id="pf"></div></div>
+  <div class="nav-bar">
+    <button class="nbtn" id="bf"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+    <button class="nbtn" id="bp"><svg viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg> Anterior</button>
+    <span class="pg-ind" id="pi">— / —</span>
+    <button class="nbtn" id="bn">Siguiente <svg viewBox="0 0 24 24"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+    <button class="nbtn" id="bl"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
+  </div>
+  <div class="hint">← → flechas | Home/End | arrastra bordes del libro</div>
 </div>
+<div class="panel">
 
-<script>
-/* ── Particles ─────────────────────────────────────── */
-(function(){
-  var c=document.getElementById('particles'),ctx=c.getContext('2d'),W,H,pts;
-  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
-  function init(){pts=[];for(var i=0;i<50;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,dx:(Math.random()-.5)*.12,dy:(Math.random()-.5)*.12,o:Math.random()*.45+.08});}
-  function draw(){ctx.clearRect(0,0,W,H);pts.forEach(function(p){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(201,168,76,'+p.o+')';ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;});requestAnimationFrame(draw);}
-  resize();init();draw();
-  window.addEventListener('resize',function(){resize();init();});
-})();
+  <div class="pcard" id="c1">
+    <div class="pcard-head" onclick="tc('c1')"><span class="ico">📚</span> Portada &amp; Contraportada <span class="chev">▾</span></div>
+    <div class="pcard-body">
+      <div class="row"><div class="rl">showCover <small>Portada/contraportada solas</small></div>
+        <label class="toggle"><input type="checkbox" id="o-sc" checked onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+      <div class="note">Primera y ultima pagina aparecen solas cuando esta activo.<br>Combina con <span class="dt h">hard</span> para portada rigida.</div>
+    </div>
+  </div>
 
-/* ── Image spreads (sorted, sin duplicados) ─────────── */
-var spreads=[
-  'pages/page 01-02.jpg','pages/page 03-04.jpg','pages/page 05-06.jpg',
-  'pages/page 07-08.jpg','pages/page 09-10.jpg','pages/page 11-12.jpg',
-  'pages/page 13-14.jpg','pages/page 15-16.jpg','pages/page 17-18.jpg',
-  'pages/page 19-20.jpg','pages/page 21-22.jpg','pages/page 23-24.jpg',
-  'pages/page 25-26.jpg','pages/page 27-28.jpg','pages/page 35-36.jpg',
-  'pages/page 48-49.jpg','pages/page 49-50.jpg','pages/page 50-51.jpg'
-];
+  <div class="pcard" id="c2">
+    <div class="pcard-head" onclick="tc('c2')"><span class="ico">📄</span> Tipo de Pagina — density <span class="chev">▾</span></div>
+    <div class="pcard-body">
+      <div class="note"><span class="dt s">soft</span> Revista — pagina se dobla y ondula.<br><span class="dt h">hard</span> Rigida — volteo solido tipo portada.<br><span style="color:var(--accent)">mixed</span> — portadas hard, interior soft.</div>
+      <div class="rg">
+        <div class="rp"><input type="radio" name="dn" id="ds" value="soft" checked onchange="sr()"><label for="ds">soft</label></div>
+        <div class="rp"><input type="radio" name="dn" id="dh" value="hard" onchange="sr()"><label for="dh">hard</label></div>
+        <div class="rp"><input type="radio" name="dn" id="dm" value="mixed" onchange="sr()"><label for="dm">mixed</label></div>
+      </div>
+    </div>
+  </div>
 
-/* Dimensiones originales del spread: 2500 x 1250
-   Cada pagina individual:            1250 x 1250  (ratio 1:1)
-   Al abrir el libro (2 paginas):     2500 x 1250  (ratio 2:1) */
-var IMG_PAGE_W = 1250;
-var IMG_PAGE_H = 1250;
-var RATIO = IMG_PAGE_H / IMG_PAGE_W; // = 1.0
+  <div class="pcard" id="c3">
+    <div class="pcard-head" onclick="tc('c3')"><span class="ico">🔄</span> Orientacion <span class="chev">▾</span></div>
+    <div class="pcard-body">
+      <div class="row"><div class="rl">usePortrait <small>1 pagina (retrato) vs 2 (paisaje)</small></div>
+        <label class="toggle"><input type="checkbox" id="o-up" onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+    </div>
+  </div>
 
-/* ── Construir elementos .page ─────────────────────── */
-var bookEl=document.getElementById('book');
-spreads.forEach(function(src){
-  ['left','right'].forEach(function(side){
-    var div=document.createElement('div');
-    div.className='page';
-    var inner=document.createElement('div');
-    inner.className='page-half '+side;
-    inner.style.backgroundImage="url('"+src+"')";
-    div.appendChild(inner);
-    bookEl.appendChild(div);
-  });
-});
+  <div class="pcard" id="c4">
+    <div class="pcard-head" onclick="tc('c4')"><span class="ico">⚡</span> Animacion <span class="chev">▾</span></div>
+    <div class="pcard-body">
+      <div class="sr"><div class="slr"><span>flippingTime</span><code id="lft">650 ms</code></div>
+        <input type="range" id="o-ft" min="100" max="2500" step="50" value="650" oninput="document.getElementById('lft').textContent=this.value+' ms';sr()"></div>
+      <div class="sr"><div class="slr"><span>maxShadowOpacity</span><code id="lsh">0.55</code></div>
+        <input type="range" id="o-sh" min="0" max="1" step="0.05" value="0.55" oninput="document.getElementById('lsh').textContent=parseFloat(this.value).toFixed(2);sr()"></div>
+      <div class="sr"><div class="slr"><span>swipeDistance</span><code id="lsw">30 px</code></div>
+        <input type="range" id="o-sw" min="5" max="150" step="5" value="30" oninput="document.getElementById('lsw').textContent=this.value+' px';sr()"></div>
+    </div>
+  </div>
 
-/* ── Calcular tamaño optimo respetando aspect ratio ── */
-function calcSize(){
-  var vw=window.innerWidth;
-  var vh=window.innerHeight;
-  // Espacio disponible descontando header (~130px) y controles (~110px)
-  var availH = vh - 240;
-  var availW = vw - 60;
+  <div class="pcard" id="c5">
+    <div class="pcard-head" onclick="tc('c5')"><span class="ico">🖱️</span> Interaccion <span class="chev">▾</span></div>
+    <div class="pcard-body">
+      <div class="row"><div class="rl">drawShadow <small>Sombra durante el volteo</small></div>
+        <label class="toggle"><input type="checkbox" id="o-ds" checked onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+      <div class="row"><div class="rl">useMouseEvents <small>Arrastrar con mouse/touch</small></div>
+        <label class="toggle"><input type="checkbox" id="o-me" checked onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+      <div class="row"><div class="rl">disableFlipByClick <small>Sin clic para voltear</small></div>
+        <label class="toggle"><input type="checkbox" id="o-dc" onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+      <div class="row"><div class="rl">showPageCorners <small>Esquina doblada al hover</small></div>
+        <label class="toggle"><input type="checkbox" id="o-pc" checked onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+      <div class="row"><div class="rl">mobileScrollSupport <small>Scroll movil</small></div>
+        <label class="toggle"><input type="checkbox" id="o-ms" onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+      <div class="row"><div class="rl">clickEventForward <small>Reenviar clics a la pagina</small></div>
+        <label class="toggle"><input type="checkbox" id="o-ce" checked onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+    </div>
+  </div>
 
-  // El libro abierto mide 2 paginas de ancho → max ancho = availW
-  // Cada pagina tiene ratio RATIO (1:1), entonces alto = pageW * RATIO
-  // Queremos:  2 * pageW <= availW  y  pageH = pageW*RATIO <= availH
-  var byWidth  = Math.floor(availW / 2);
-  var byHeight = Math.floor(availH / RATIO);
-  var pageW    = Math.min(byWidth, byHeight, 650); // tope de 650px por pagina
-  var pageH    = Math.round(pageW * RATIO);
-  return {w: pageW, h: pageH};
+  <div class="pcard" id="c6">
+    <div class="pcard-head" onclick="tc('c6')"><span class="ico">📐</span> Corner — esquina de volteo <span class="chev">▾</span></div>
+    <div class="pcard-body">
+      <div class="note" style="margin-bottom:.28rem">Desde que esquina inicia la animacion de volteo.</div>
+      <div class="rg">
+        <div class="rp"><input type="radio" name="cn" id="cb" value="bottom" checked><label for="cb">bottom</label></div>
+        <div class="rp"><input type="radio" name="cn" id="ct" value="top"><label for="ct">top</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard" id="c7">
+    <div class="pcard-head" onclick="tc('c7')"><span class="ico">🧭</span> Metodos — Navegacion <span class="chev">▾</span></div>
+    <div class="pcard-body">
+      <div class="note" style="margin-bottom:.18rem">Con animacion (usa el corner seleccionado):</div>
+      <div class="mg">
+        <button class="mb g" onclick="mfn()">flipNext(corner)</button>
+        <button class="mb g" onclick="mfp()">flipPrev(corner)</button>
+      </div>
+      <div class="note" style="margin:.3rem 0 .18rem">Sin animacion (instantaneo):</div>
+      <div class="mg">
+        <button class="mb b" onclick="mtn()">turnToNextPage()</button>
+        <button class="mb b" onclick="mtp()">turnToPrevPage()</button>
+      </div>
+      <div class="note" style="margin:.3rem 0 .18rem">Ir a pagina N:</div>
+      <div class="ir">
+        <input type="number" id="ip" value="0" min="0">
+        <button class="mb g" onclick="mf()" style="flex:1">flip(N)</button>
+        <button class="mb b" onclick="mt()" style="flex:1">turnToPage(N)</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pcard" id="c8">
+    <div class="pcard-head" onclick="tc('c8')"><span class="ico">ℹ️</span> Metodos — Informacion <span class="chev">▾</span></div>
+    <div class="pcard-body">
+      <div class="mg">
+        <button class="mb p" onclick="mgci()">getCurrentPageIndex()</button>
+        <button class="mb p" onclick="mgpc()">getPageCount()</button>
+        <button class="mb p" onclick="mhn()">hasNextPage()</button>
+        <button class="mb p" onclick="mhp()">hasPrevPage()</button>
+        <button class="mb p" onclick="mgo()">getOrientation()</button>
+        <button class="mb p" onclick="mgb()">getBoundsRect()</button>
+      </div>
+      <div class="ir" style="margin-top:.28rem">
+        <span class="note">getPage(N):</span>
+        <input type="number" id="igp" value="0" min="0">
+        <button class="mb p" onclick="mgp()" style="flex:1">getPage(N)</button>
+      </div>
+      <div class="note" style="margin:.28rem 0 .12rem">Resultado:</div>
+      <div class="out" id="out">— haz clic en un metodo —</div>
+    </div>
+  </div>
+
+  <div class="pcard" id="c9">
+    <div class="pcard-head" onclick="tc('c9')"><span class="ico">🔧</span> Metodos — Control <span class="chev">▾</span></div>
+    <div class="pcard-body">
+      <div class="mg">
+        <button class="mb b" onclick="mr()">render()</button>
+        <button class="mb g" onclick="mu()">updateFromHTML()</button>
+        <button class="mb r" onclick="md()">destroy()</button>
+        <button class="mb g" onclick="reinit()">new PageFlip()</button>
+      </div>
+      <div class="note" style="margin-top:.3rem"><span style="color:var(--red)">destroy()</span> elimina la instancia. <span style="color:var(--green)">new PageFlip()</span> la recrea con las opciones del panel.</div>
+    </div>
+  </div>
+
+  <div class="pcard" id="c10">
+    <div class="pcard-head" onclick="tc('c10')"><span class="ico">📡</span> Eventos en tiempo real <span class="chev">▾</span></div>
+    <div class="pcard-body">
+      <div class="note" style="margin-bottom:.25rem"><code style="color:var(--code);font-family:'Fira Code',monospace">flip · changeOrientation · changeState · init · update</code></div>
+      <button class="lc" onclick="cl()">limpiar ✕</button>
+      <div class="elog" id="elog"><div class="ev"><span class="et">--:--</span><span class="en" style="color:var(--muted)">esperando eventos...</span></div></div>
+    </div>
+  </div>
+
+  <div class="pcard collapsed" id="c11">
+    <div class="pcard-head" onclick="tc('c11')"><span class="ico">📖</span> Referencia rapida <span class="chev">▾</span></div>
+    <div class="pcard-body">
+      <div style="font-size:.57rem;color:var(--muted);line-height:1.85;font-family:'Fira Code',monospace">
+        <b style="color:var(--accent)">Estados (changeState):</b><br>&nbsp;STOP · USER_FOLD · FLIPPING<br>
+        <b style="color:var(--accent)">Orientaciones:</b><br>&nbsp;PORTRAIT · LANDSCAPE<br>
+        <b style="color:var(--accent)">Density:</b><br>&nbsp;soft (papel) · hard (portada)<br>
+        <b style="color:var(--accent)">Corner:</b><br>&nbsp;top · bottom<br>
+        <b style="color:var(--accent)">getBoundsRect():</b><br>&nbsp;{left,top,width,height,pageWidth}
+      </div>
+    </div>
+  </div>
+  <div style="height:.8rem"></div>
+</div>
+</div><script>
+(function(){var c=document.getElementById("particles"),ctx=c.getContext("2d"),W,H,pts;function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}function init(){pts=[];for(var i=0;i<45;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1+.2,dx:(Math.random()-.5)*.1,dy:(Math.random()-.5)*.1,o:Math.random()*.35+.07});}function draw(){ctx.clearRect(0,0,W,H);pts.forEach(function(p){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle="rgba(201,168,76,"+p.o+")";ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;});requestAnimationFrame(draw);}resize();init();draw();window.addEventListener("resize",function(){resize();init();});})();
+function tc(id){document.getElementById(id).classList.toggle("collapsed");}
+var spreads=["pages/page 01-02.jpg","pages/page 03-04.jpg","pages/page 05-06.jpg","pages/page 07-08.jpg","pages/page 09-10.jpg","pages/page 11-12.jpg","pages/page 13-14.jpg","pages/page 15-16.jpg","pages/page 17-18.jpg","pages/page 19-20.jpg","pages/page 21-22.jpg","pages/page 23-24.jpg","pages/page 25-26.jpg","pages/page 27-28.jpg","pages/page 35-36.jpg","pages/page 48-49.jpg","pages/page 49-50.jpg","pages/page 50-51.jpg"];
+var PAGE_RATIO=1.0;
+function buildPages(){
+  var dn=document.querySelector("input[name=dn]:checked").value;
+  var bk=document.getElementById("book");bk.innerHTML="";
+  var tot=spreads.length*2;
+  spreads.forEach(function(src,si){["l","r"].forEach(function(side){
+    var ai=si*2+(side==="l"?0:1);
+    var den=(dn==="mixed")?(ai===0||ai===tot-1?"hard":"soft"):dn;
+    var d=document.createElement("div");d.className="page";d.setAttribute("data-density",den);
+    var i=document.createElement("div");i.className="ph "+side;i.style.backgroundImage="url("+JSON.stringify(src)+")";
+    d.appendChild(i);bk.appendChild(d);});});
 }
-
-/* ── Init StPageFlip ────────────────────────────────── */
-window.addEventListener('DOMContentLoaded',function(){
-  var sz=calcSize();
-
-  var pageFlip=new St.PageFlip(bookEl,{
-    width:            sz.w,
-    height:           sz.h,
-    showCover:        false,
-    mobileScrollSupport: false,
-    maxShadowOpacity: 0.55,
-    flippingTime:     650,
-    usePortrait:      false,
-    drawShadow:       true,
-    autoSize:         false   // desactivado para respetar nuestro ratio exacto
-  });
-
-  pageFlip.loadFromHTML(bookEl.querySelectorAll('.page'));
-
-  /* ── UI update ─────────────────────────────────────── */
-  function updateUI(){
-    var cur=pageFlip.getCurrentPageIndex();
-    var tot=pageFlip.getPageCount();
-    var pct=tot>1?Math.round(cur/(tot-1)*100):0;
-    document.getElementById('progress-fill').style.width=pct+'%';
-
-    var spreadCur=Math.floor(cur/2)+1;
-    var spreadTot=Math.ceil(tot/2);
-    document.getElementById('page-indicator').textContent=
-      'Pagina '+spreadCur+' de '+spreadTot;
-
-    document.getElementById('btn-prev').disabled =(cur<2);
-    document.getElementById('btn-first').disabled=(cur<2);
-    document.getElementById('btn-next').disabled =(cur>=tot-2);
-    document.getElementById('btn-last').disabled =(cur>=tot-2);
-  }
-
-  pageFlip.on('flip',updateUI);
-  pageFlip.on('init',updateUI);
-
-  document.getElementById('btn-prev').addEventListener('click',function(){pageFlip.flipPrev('bottom');});
-  document.getElementById('btn-next').addEventListener('click',function(){pageFlip.flipNext('bottom');});
-  document.getElementById('btn-first').addEventListener('click',function(){pageFlip.flip(0);});
-  document.getElementById('btn-last').addEventListener('click',function(){pageFlip.flip(pageFlip.getPageCount()-2);});
-
-  document.addEventListener('keydown',function(e){
-    if(e.key==='ArrowRight'||e.key==='ArrowDown') pageFlip.flipNext('bottom');
-    if(e.key==='ArrowLeft' ||e.key==='ArrowUp')   pageFlip.flipPrev('bottom');
-    if(e.key==='Home') pageFlip.flip(0);
-    if(e.key==='End')  pageFlip.flip(pageFlip.getPageCount()-2);
-  });
-
-  updateUI();
-});
-</script>
-</body>
-</html>
+function calcSize(){var pw=310,vw=window.innerWidth-pw-22,vh=window.innerHeight-130;var w=Math.min(Math.floor(vw/2),Math.floor(vh/PAGE_RATIO),580);return{w:w,h:Math.round(w*PAGE_RATIO)};}
+var pf=null,sp=0,rt=null;
+function gcn(){return document.querySelector("input[name=cn]:checked").value;}
+function gopt(){return{showCover:document.getElementById("o-sc").checked,usePortrait:document.getElementById("o-up").checked,drawShadow:document.getElementById("o-ds").checked,useMouseEvents:document.getElementById("o-me").checked,disableFlipByClick:document.getElementById("o-dc").checked,showPageCorners:document.getElementById("o-pc").checked,mobileScrollSupport:document.getElementById("o-ms").checked,clickEventForward:document.getElementById("o-ce").checked,flippingTime:parseInt(document.getElementById("o-ft").value),maxShadowOpacity:parseFloat(document.getElementById("o-sh").value),swipeDistance:parseInt(document.getElementById("o-sw").value),autoSize:false};}
+function sst(t,c){var e=document.getElementById("sbadge");e.textContent="● "+t;e.style.color=c||"var(--green)";}
+function reinit(){
+  if(pf){sp=pf.getCurrentPageIndex();try{pf.destroy();}catch(e){}pf=null;}
+  buildPages();var sz=calcSize();var o=gopt();o.width=sz.w;o.height=sz.h;
+  try{pf=new St.PageFlip(document.getElementById("book"),o);pf.loadFromHTML(document.querySelectorAll("#book .page"));
+    ae();sst("Activo","var(--green)");
+    setTimeout(function(){if(sp>0)pf.turnToPage(sp);ui();},80);
+    le("init","{pages:"+spreads.length*2+",size:"+sz.w+"x"+sz.h+"}");
+  }catch(err){sst("Error","var(--red)");le("ERROR",err.message);}
+}
+function sr(){clearTimeout(rt);rt=setTimeout(reinit,700);}
+var ec={flip:"#c9a84c",changeOrientation:"#4c8fcf",changeState:"#9b6bcf",update:"#4caf82",init:"#4caf82",ERROR:"#cf6b4c"};
+function ae(){if(!pf)return;
+  pf.on("flip",function(e){ui();le("flip","{page:"+e.data+"}");});
+  pf.on("changeOrientation",function(e){ui();le("changeOrientation",e.data);});
+  pf.on("changeState",function(e){le("changeState",e.data);});
+  pf.on("update",function(){ui();le("update","{}");});
+}
+function le(n,d){var log=document.getElementById("elog");var now=new Date();var t=now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0")+":"+now.getSeconds().toString().padStart(2,"0");var el=document.createElement("div");el.className="ev";el.innerHTML="<span class=et>"+t+"</span><span class=en style=color:"+(ec[n]||"#aaa")+">"+n+"</span><span class=ed>"+d+"</span>";var ph=log.querySelector(".en[style*=muted]");if(ph)ph.parentElement.remove();log.insertBefore(el,log.firstChild);if(log.children.length>50)log.removeChild(log.lastChild);}
+function cl(){document.getElementById("elog").innerHTML="<div class=ev><span class=et>--:--</span><span class=en style=color:var(--muted)>log limpiado</span></div>";}
+function ui(){if(!pf)return;var cur=pf.getCurrentPageIndex(),tot=pf.getPageCount();document.getElementById("pf").style.width=(tot>1?Math.round(cur/(tot-1)*100):0)+"%";document.getElementById("pi").textContent="Pag. "+(Math.floor(cur/2)+1)+" / "+Math.ceil(tot/2);var hn=pf.hasNextPage(),hp=pf.hasPrevPage();document.getElementById("bp").disabled=!hp;document.getElementById("bf").disabled=!hp;document.getElementById("bn").disabled=!hn;document.getElementById("bl").disabled=!hn;}
+function so(v){document.getElementById("out").textContent=(typeof v==="object")?JSON.stringify(v,null,2):String(v);}
+function g(fn){if(!pf){so("Sin instancia activa");return;}fn();}
+function mfn(){g(function(){pf.flipNext(gcn());});}
+function mfp(){g(function(){pf.flipPrev(gcn());});}
+function mtn(){g(function(){pf.turnToNextPage();ui();});}
+function mtp(){g(function(){pf.turnToPrevPage();ui();});}
+function mf(){g(function(){pf.flip(parseInt(document.getElementById("ip").value)||0,gcn());});}
+function mt(){g(function(){pf.turnToPage(parseInt(document.getElementById("ip").value)||0);ui();});}
+function mgci(){g(function(){so(pf.getCurrentPageIndex());});}
+function mgpc(){g(function(){so(pf.getPageCount());});}
+function mhn(){g(function(){so(pf.hasNextPage());});}
+function mhp(){g(function(){so(pf.hasPrevPage());});}
+function mgo(){g(function(){so(pf.getOrientation());});}
+function mgb(){g(function(){so(pf.getBoundsRect());});}
+function mgp(){g(function(){var n=parseInt(document.getElementById("igp").value)||0;var p=pf.getPage(n);so(p?{density:p.getDensity(),state:p.getState()}:"null");});}
+function mr(){g(function(){pf.render();le("render","OK");so("OK");});}
+function mu(){g(function(){pf.updateFromHTML(document.querySelectorAll("#book .page"));le("updateFromHTML","OK");so("OK");});}
+function md(){if(!pf){so("No hay instancia");return;}pf.destroy();pf=null;sst("Destruido","var(--red)");le("destroy","eliminado");so("Destruido. Usa new PageFlip() para recrear.");}
+document.addEventListener("keydown",function(e){if(!pf)return;if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight"||e.key==="ArrowDown")pf.flipNext(gcn());if(e.key==="ArrowLeft"||e.key==="ArrowUp")pf.flipPrev(gcn());if(e.key==="Home"){pf.turnToPage(0);ui();}if(e.key==="End"){pf.turnToPage(pf.getPageCount()-2);ui();}});
+document.getElementById("gr").addEventListener("click",reinit);
+document.getElementById("bp").addEventListener("click",function(){if(pf)pf.flipPrev(gcn());});
+document.getElementById("bn").addEventListener("click",function(){if(pf)pf.flipNext(gcn());});
+document.getElementById("bf").addEventListener("click",function(){if(pf){pf.turnToPage(0);ui();}});
+document.getElementById("bl").addEventListener("click",function(){if(pf){pf.turnToPage(pf.getPageCount()-2);ui();}});
+window.addEventListener("DOMContentLoaded",reinit);
+</script></body></html>
