@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>StPageFlip Demo Completo</title><meta name="description" content="Demo completo StPageFlip"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script><style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>StPageFlip Demo Completo</title><meta name="description" content="Demo completo StPageFlip"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"><script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script><style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#080912;--bg2:#0f1022;--border:rgba(201,168,76,.18);--accent:#c9a84c;--accent-lt:#e8c96d;--accent-dk:#8a6a28;--green:#4caf82;--blue:#4c8fcf;--red:#cf6b4c;--purple:#9b6bcf;--text:#e8e0cc;--muted:#7a7260;--code:#f0c070;--pw:310px}
 html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(60,40,140,.4),transparent 65%),radial-gradient(ellipse 40% 30% at 10% 90%,rgba(20,10,70,.5),transparent 60%)}
@@ -112,7 +112,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;heigh
     <div class="pcard-head" onclick="tc('c1')"><span class="ico">📚</span> Portada &amp; Contraportada <span class="chev">▾</span></div>
     <div class="pcard-body">
       <div class="row"><div class="rl">showCover <small>Portada/contraportada solas</small></div>
-        <label class="toggle"><input type="checkbox" id="o-sc" checked onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+        <label class="toggle"><input type="checkbox" id="o-sc" onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
       <div class="note">Primera y ultima pagina aparecen solas cuando esta activo.<br>Combina con <span class="dt h">hard</span> para portada rigida.</div>
     </div>
   </div>
@@ -283,21 +283,21 @@ function reinit(){
   buildPages();var sz=calcSize();var o=gopt();o.width=sz.w;o.height=sz.h;
   try{pf=new St.PageFlip(document.getElementById("book"),o);pf.loadFromHTML(document.querySelectorAll("#book .page"));
     ae();sst("Activo","var(--green)");
-    setTimeout(function(){if(sp>0)pf.turnToPage(sp);ui();},80);
+    setTimeout(function(){if(sp>0)pf.turnToPage(sp);ui();},200);
     le("init","{pages:"+spreads.length*2+",size:"+sz.w+"x"+sz.h+"}");
   }catch(err){sst("Error","var(--red)");le("ERROR",err.message);}
 }
 function sr(){clearTimeout(rt);rt=setTimeout(reinit,700);}
 var ec={flip:"#c9a84c",changeOrientation:"#4c8fcf",changeState:"#9b6bcf",update:"#4caf82",init:"#4caf82",ERROR:"#cf6b4c"};
 function ae(){if(!pf)return;
-  pf.on("flip",function(e){ui();le("flip","{page:"+e.data+"}");});
-  pf.on("changeOrientation",function(e){ui();le("changeOrientation",e.data);});
+  pf.on("flip",function(e){setTimeout(ui,50);le("flip","{page:"+e.data+"}");});
+  pf.on("changeOrientation",function(e){setTimeout(ui,50);le("changeOrientation",e.data);});
   pf.on("changeState",function(e){le("changeState",e.data);});
-  pf.on("update",function(){ui();le("update","{}");});
+  pf.on("update",function(){setTimeout(ui,50);le("update","{}");});
 }
 function le(n,d){var log=document.getElementById("elog");var now=new Date();var t=now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0")+":"+now.getSeconds().toString().padStart(2,"0");var el=document.createElement("div");el.className="ev";el.innerHTML="<span class=et>"+t+"</span><span class=en style=color:"+(ec[n]||"#aaa")+">"+n+"</span><span class=ed>"+d+"</span>";var ph=log.querySelector(".en[style*=muted]");if(ph)ph.parentElement.remove();log.insertBefore(el,log.firstChild);if(log.children.length>50)log.removeChild(log.lastChild);}
 function cl(){document.getElementById("elog").innerHTML="<div class=ev><span class=et>--:--</span><span class=en style=color:var(--muted)>log limpiado</span></div>";}
-function ui(){if(!pf)return;var cur=pf.getCurrentPageIndex(),tot=pf.getPageCount();document.getElementById("pf").style.width=(tot>1?Math.round(cur/(tot-1)*100):0)+"%";document.getElementById("pi").textContent="Pag. "+(Math.floor(cur/2)+1)+" / "+Math.ceil(tot/2);var hn=pf.hasNextPage(),hp=pf.hasPrevPage();document.getElementById("bp").disabled=!hp;document.getElementById("bf").disabled=!hp;document.getElementById("bn").disabled=!hn;document.getElementById("bl").disabled=!hn;}
+function ui(){if(!pf)return;var cur=pf.getCurrentPageIndex(),tot=pf.getPageCount();document.getElementById("pf").style.width=(tot>1?Math.round(cur/(tot-1)*100):0)+"%";document.getElementById("pi").textContent="Pag. "+(Math.floor(cur/2)+1)+" / "+Math.ceil(tot/2);var atStart=(cur<=0),atEnd=(cur>=tot-2);document.getElementById("bp").disabled=atStart;document.getElementById("bf").disabled=atStart;document.getElementById("bn").disabled=atEnd;document.getElementById("bl").disabled=atEnd;}
 function so(v){document.getElementById("out").textContent=(typeof v==="object")?JSON.stringify(v,null,2):String(v);}
 function g(fn){if(!pf){so("Sin instancia activa");return;}fn();}
 function mfn(){g(function(){pf.flipNext(gcn());});}
