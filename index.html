@@ -3,10 +3,10 @@
 html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(60,40,140,.4),transparent 65%),radial-gradient(ellipse 40% 30% at 10% 90%,rgba(20,10,70,.5),transparent 60%)}
 #particles{position:fixed;inset:0;z-index:0;pointer-events:none}
-.layout{position:relative;z-index:1;display:grid;grid-template-columns:1fr var(--pw);grid-template-rows:auto 1fr;height:100vh;overflow:hidden}
+.layout{position:relative;z-index:1;display:grid;grid-template-columns:1fr;grid-template-rows:auto 1fr;height:100vh;overflow:hidden}
 .topbar{grid-column:1/-1;display:flex;align-items:center;gap:.8rem;padding:.5rem 1.1rem;background:rgba(8,9,18,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
 .topbar h1{font-family:'Cinzel',serif;font-size:.9rem;font-weight:700;background:linear-gradient(135deg,var(--accent-lt),var(--accent),var(--accent-dk));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.06em;white-space:nowrap}
-.badge{font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;background:rgba(201,168,76,.1);border:1px solid var(--border);color:var(--accent);padding:.16rem .5rem;border-radius:20px}
+.badge{font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;background:rgba(201,168,76,.1);border:1px solid var(--border);color:var(--accent);padding:.16rem .5rem;border-radius:20px;margin-left:auto}
 .spacer{flex:1}
 .reinit-btn{display:flex;align-items:center;gap:.3rem;padding:.3rem .8rem;border-radius:6px;background:var(--accent);color:#1a1005;font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border:none;cursor:pointer;transition:all .18s}
 .reinit-btn:hover{background:var(--accent-lt);box-shadow:0 0 14px rgba(201,168,76,.4)}
@@ -82,17 +82,179 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;heigh
 .ph.l{background-position:0% 0%}
 .ph.r{background-position:100% 0%}
 .note{font-size:.6rem;color:var(--muted);line-height:1.5}
-</style></head><body><canvas id="particles"></canvas>
-<div class="layout">
+/* Custom Cover & Gradient Page Styles */
+.cover-page {
+  background: linear-gradient(135deg, #151624 0%, #07080e 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 10px double var(--accent);
+  padding: 2rem;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  color: var(--text);
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+  text-align: center;
+}
+.cover-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(135deg, var(--accent-lt), var(--accent), var(--accent-dk));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.08em;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+}
+.cover-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: var(--muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.cover-decoration {
+  width: 90px;
+  height: 2px;
+  background: var(--accent);
+  position: relative;
+  margin: 1.8rem 0;
+}
+.cover-decoration::before {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #090a13;
+  padding: 0 8px;
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+.back-cover-page {
+  background: linear-gradient(135deg, #07080e 0%, #151624 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 10px double var(--accent);
+  padding: 2rem;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  color: var(--text);
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+  text-align: center;
+}
+.gradient-page {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.gradient-page.left {
+  background: linear-gradient(to right, #333333 0%, #111111 100%);
+  box-shadow: inset -30px 0 40px rgba(0,0,0,0.9);
+}
+.gradient-page.right {
+  background: linear-gradient(to left, #333333 0%, #111111 100%);
+  box-shadow: inset 30px 0 40px rgba(0,0,0,0.9);
+}
+.back-cover-wine {
+  background: linear-gradient(135deg, #a8233c 0%, #4a0d18 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 10px double var(--accent);
+  padding: 2rem;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  color: var(--text);
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+  text-align: center;
+}
+.book-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 25px;
+  z-index: 10;
+  pointer-events: none;
+}
+.book-spine.left {
+  left: 0;
+  background: linear-gradient(to right, 
+    rgba(0,0,0,0.85) 0%, 
+    rgba(255,255,255,0.15) 25%, 
+    rgba(0,0,0,0.3) 50%, 
+    rgba(0,0,0,0.85) 85%, 
+    rgba(255,255,255,0.2) 93%, 
+    rgba(0,0,0,0.9) 100%
+  );
+  box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+.book-spine.right {
+  right: 0;
+  background: linear-gradient(to left, 
+    rgba(0,0,0,0.85) 0%, 
+    rgba(255,255,255,0.15) 25%, 
+    rgba(0,0,0,0.3) 50%, 
+    rgba(0,0,0,0.85) 85%, 
+    rgba(255,255,255,0.2) 93%, 
+    rgba(0,0,0,0.9) 100%
+  );
+  box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+  border-left: 1px solid rgba(255,255,255,0.08);
+}
+.inner-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  background: linear-gradient(to right, 
+    rgba(0,0,0,0.85) 0%, 
+    rgba(255,255,255,0.05) 30%, 
+    rgba(0,0,0,0.3) 50%, 
+    rgba(255,255,255,0.05) 70%, 
+    rgba(0,0,0,0.85) 100%
+  );
+  z-index: 100;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  display: none;
+}
+.flat-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  pointer-events: none;
+  z-index: 101;
+  border-left: 1px solid rgba(0, 0, 0, 0.45);
+  border-right: 1px solid rgba(0, 0, 0, 0.45);
+  box-shadow: 
+    inset 3px 0 5px rgba(0,0,0,0.15), 
+    inset -3px 0 5px rgba(0,0,0,0.15),
+    -2px 0 4px rgba(0,0,0,0.25), 
+    2px 0 4px rgba(0,0,0,0.25);
+  background: rgba(255,255,255,0.02);
+  display: none;
+}
+</style></head><body><canvas id="particles"></canvas><div class="layout">
 <div class="topbar">
   <h1>📖 Mi Libro Digital</h1>
-  <span class="badge">StPageFlip — Demo Completo</span>
-  <div class="spacer"></div>
-  <span id="sbadge" style="font-size:.6rem;color:var(--green)">● Activo</span>
-  <button class="reinit-btn" id="gr">
-    <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-8 3.58-8 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-    Aplicar &amp; Re-init
-  </button>
+  <span class="badge">Portada Abierta Plana</span>
 </div>
 <div class="book-stage">
   <div id="book-container"><div id="book"></div></div>
@@ -105,189 +267,256 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;heigh
     <button class="nbtn" id="bl"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
   </div>
   <div class="hint">← → flechas | Home/End | arrastra bordes del libro</div>
-</div>
-<div class="panel">
-
-  <div class="pcard" id="c1">
-    <div class="pcard-head" onclick="tc('c1')"><span class="ico">📚</span> Portada &amp; Contraportada <span class="chev">▾</span></div>
-    <div class="pcard-body">
-      <div class="row"><div class="rl">showCover <small>Portada/contraportada solas</small></div>
-        <label class="toggle"><input type="checkbox" id="o-sc" onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
-      <div class="note">Primera y ultima pagina aparecen solas cuando esta activo.<br>Combina con <span class="dt h">hard</span> para portada rigida.</div>
-    </div>
-  </div>
-
-  <div class="pcard" id="c2">
-    <div class="pcard-head" onclick="tc('c2')"><span class="ico">📄</span> Tipo de Pagina — density <span class="chev">▾</span></div>
-    <div class="pcard-body">
-      <div class="note"><span class="dt s">soft</span> Revista — pagina se dobla y ondula.<br><span class="dt h">hard</span> Rigida — volteo solido tipo portada.<br><span style="color:var(--accent)">mixed</span> — portadas hard, interior soft.</div>
-      <div class="rg">
-        <div class="rp"><input type="radio" name="dn" id="ds" value="soft" checked onchange="sr()"><label for="ds">soft</label></div>
-        <div class="rp"><input type="radio" name="dn" id="dh" value="hard" onchange="sr()"><label for="dh">hard</label></div>
-        <div class="rp"><input type="radio" name="dn" id="dm" value="mixed" onchange="sr()"><label for="dm">mixed</label></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="pcard" id="c3">
-    <div class="pcard-head" onclick="tc('c3')"><span class="ico">🔄</span> Orientacion <span class="chev">▾</span></div>
-    <div class="pcard-body">
-      <div class="row"><div class="rl">usePortrait <small>1 pagina (retrato) vs 2 (paisaje)</small></div>
-        <label class="toggle"><input type="checkbox" id="o-up" onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
-    </div>
-  </div>
-
-  <div class="pcard" id="c4">
-    <div class="pcard-head" onclick="tc('c4')"><span class="ico">⚡</span> Animacion <span class="chev">▾</span></div>
-    <div class="pcard-body">
-      <div class="sr"><div class="slr"><span>flippingTime</span><code id="lft">650 ms</code></div>
-        <input type="range" id="o-ft" min="100" max="2500" step="50" value="650" oninput="document.getElementById('lft').textContent=this.value+' ms';sr()"></div>
-      <div class="sr"><div class="slr"><span>maxShadowOpacity</span><code id="lsh">0.55</code></div>
-        <input type="range" id="o-sh" min="0" max="1" step="0.05" value="0.55" oninput="document.getElementById('lsh').textContent=parseFloat(this.value).toFixed(2);sr()"></div>
-      <div class="sr"><div class="slr"><span>swipeDistance</span><code id="lsw">30 px</code></div>
-        <input type="range" id="o-sw" min="5" max="150" step="5" value="30" oninput="document.getElementById('lsw').textContent=this.value+' px';sr()"></div>
-    </div>
-  </div>
-
-  <div class="pcard" id="c5">
-    <div class="pcard-head" onclick="tc('c5')"><span class="ico">🖱️</span> Interaccion <span class="chev">▾</span></div>
-    <div class="pcard-body">
-      <div class="row"><div class="rl">drawShadow <small>Sombra durante el volteo</small></div>
-        <label class="toggle"><input type="checkbox" id="o-ds" checked onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
-      <div class="row"><div class="rl">useMouseEvents <small>Arrastrar con mouse/touch</small></div>
-        <label class="toggle"><input type="checkbox" id="o-me" checked onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
-      <div class="row"><div class="rl">disableFlipByClick <small>Sin clic para voltear</small></div>
-        <label class="toggle"><input type="checkbox" id="o-dc" onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
-      <div class="row"><div class="rl">showPageCorners <small>Esquina doblada al hover</small></div>
-        <label class="toggle"><input type="checkbox" id="o-pc" checked onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
-      <div class="row"><div class="rl">mobileScrollSupport <small>Scroll movil</small></div>
-        <label class="toggle"><input type="checkbox" id="o-ms" onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
-      <div class="row"><div class="rl">clickEventForward <small>Reenviar clics a la pagina</small></div>
-        <label class="toggle"><input type="checkbox" id="o-ce" checked onchange="sr()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
-    </div>
-  </div>
-
-  <div class="pcard" id="c6">
-    <div class="pcard-head" onclick="tc('c6')"><span class="ico">📐</span> Corner — esquina de volteo <span class="chev">▾</span></div>
-    <div class="pcard-body">
-      <div class="note" style="margin-bottom:.28rem">Desde que esquina inicia la animacion de volteo.</div>
-      <div class="rg">
-        <div class="rp"><input type="radio" name="cn" id="cb" value="bottom" checked><label for="cb">bottom</label></div>
-        <div class="rp"><input type="radio" name="cn" id="ct" value="top"><label for="ct">top</label></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="pcard" id="c7">
-    <div class="pcard-head" onclick="tc('c7')"><span class="ico">🧭</span> Metodos — Navegacion <span class="chev">▾</span></div>
-    <div class="pcard-body">
-      <div class="note" style="margin-bottom:.18rem">Con animacion (usa el corner seleccionado):</div>
-      <div class="mg">
-        <button class="mb g" onclick="mfn()">flipNext(corner)</button>
-        <button class="mb g" onclick="mfp()">flipPrev(corner)</button>
-      </div>
-      <div class="note" style="margin:.3rem 0 .18rem">Sin animacion (instantaneo):</div>
-      <div class="mg">
-        <button class="mb b" onclick="mtn()">turnToNextPage()</button>
-        <button class="mb b" onclick="mtp()">turnToPrevPage()</button>
-      </div>
-      <div class="note" style="margin:.3rem 0 .18rem">Ir a pagina N:</div>
-      <div class="ir">
-        <input type="number" id="ip" value="0" min="0">
-        <button class="mb g" onclick="mf()" style="flex:1">flip(N)</button>
-        <button class="mb b" onclick="mt()" style="flex:1">turnToPage(N)</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="pcard" id="c8">
-    <div class="pcard-head" onclick="tc('c8')"><span class="ico">ℹ️</span> Metodos — Informacion <span class="chev">▾</span></div>
-    <div class="pcard-body">
-      <div class="mg">
-        <button class="mb p" onclick="mgci()">getCurrentPageIndex()</button>
-        <button class="mb p" onclick="mgpc()">getPageCount()</button>
-        <button class="mb p" onclick="mhn()">hasNextPage()</button>
-        <button class="mb p" onclick="mhp()">hasPrevPage()</button>
-        <button class="mb p" onclick="mgo()">getOrientation()</button>
-        <button class="mb p" onclick="mgb()">getBoundsRect()</button>
-      </div>
-      <div class="ir" style="margin-top:.28rem">
-        <span class="note">getPage(N):</span>
-        <input type="number" id="igp" value="0" min="0">
-        <button class="mb p" onclick="mgp()" style="flex:1">getPage(N)</button>
-      </div>
-      <div class="note" style="margin:.28rem 0 .12rem">Resultado:</div>
-      <div class="out" id="out">— haz clic en un metodo —</div>
-    </div>
-  </div>
-
-  <div class="pcard" id="c9">
-    <div class="pcard-head" onclick="tc('c9')"><span class="ico">🔧</span> Metodos — Control <span class="chev">▾</span></div>
-    <div class="pcard-body">
-      <div class="mg">
-        <button class="mb b" onclick="mr()">render()</button>
-        <button class="mb g" onclick="mu()">updateFromHTML()</button>
-        <button class="mb r" onclick="md()">destroy()</button>
-        <button class="mb g" onclick="reinit()">new PageFlip()</button>
-      </div>
-      <div class="note" style="margin-top:.3rem"><span style="color:var(--red)">destroy()</span> elimina la instancia. <span style="color:var(--green)">new PageFlip()</span> la recrea con las opciones del panel.</div>
-    </div>
-  </div>
-
-  <div class="pcard" id="c10">
-    <div class="pcard-head" onclick="tc('c10')"><span class="ico">📡</span> Eventos en tiempo real <span class="chev">▾</span></div>
-    <div class="pcard-body">
-      <div class="note" style="margin-bottom:.25rem"><code style="color:var(--code);font-family:'Fira Code',monospace">flip · changeOrientation · changeState · init · update</code></div>
-      <button class="lc" onclick="cl()">limpiar ✕</button>
-      <div class="elog" id="elog"><div class="ev"><span class="et">--:--</span><span class="en" style="color:var(--muted)">esperando eventos...</span></div></div>
-    </div>
-  </div>
-
-  <div class="pcard collapsed" id="c11">
-    <div class="pcard-head" onclick="tc('c11')"><span class="ico">📖</span> Referencia rapida <span class="chev">▾</span></div>
-    <div class="pcard-body">
-      <div style="font-size:.57rem;color:var(--muted);line-height:1.85;font-family:'Fira Code',monospace">
-        <b style="color:var(--accent)">Estados (changeState):</b><br>&nbsp;STOP · USER_FOLD · FLIPPING<br>
-        <b style="color:var(--accent)">Orientaciones:</b><br>&nbsp;PORTRAIT · LANDSCAPE<br>
-        <b style="color:var(--accent)">Density:</b><br>&nbsp;soft (papel) · hard (portada)<br>
-        <b style="color:var(--accent)">Corner:</b><br>&nbsp;top · bottom<br>
-        <b style="color:var(--accent)">getBoundsRect():</b><br>&nbsp;{left,top,width,height,pageWidth}
-      </div>
-    </div>
-  </div>
-  <div style="height:.8rem"></div>
-</div>
-</div><script>
+</div></div><script>
 (function(){var c=document.getElementById("particles"),ctx=c.getContext("2d"),W,H,pts;function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}function init(){pts=[];for(var i=0;i<45;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1+.2,dx:(Math.random()-.5)*.1,dy:(Math.random()-.5)*.1,o:Math.random()*.35+.07});}function draw(){ctx.clearRect(0,0,W,H);pts.forEach(function(p){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle="rgba(201,168,76,"+p.o+")";ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;});requestAnimationFrame(draw);}resize();init();draw();window.addEventListener("resize",function(){resize();init();});})();
-function tc(id){document.getElementById(id).classList.toggle("collapsed");}
-var spreads=["pages/page 01-02.jpg","pages/page 03-04.jpg","pages/page 05-06.jpg","pages/page 07-08.jpg","pages/page 09-10.jpg","pages/page 11-12.jpg","pages/page 13-14.jpg","pages/page 15-16.jpg","pages/page 17-18.jpg","pages/page 19-20.jpg","pages/page 21-22.jpg","pages/page 23-24.jpg","pages/page 25-26.jpg","pages/page 27-28.jpg","pages/page 35-36.jpg","pages/page 48-49.jpg","pages/page 49-50.jpg","pages/page 50-51.jpg"];
+var spreads=[
+  "pages/page 01-02.jpg",
+  "pages/page 03-04.jpg",
+  "pages/page 05-06.jpg",
+  "pages/page 07-08.jpg",
+  "pages/page 09-10.jpg",
+  "pages/page 11-12.jpg",
+  "pages/page 13-14.jpg",
+  "pages/page 15-16.jpg",
+  "pages/page 17-18.jpg",
+  "pages/page 19-20.jpg",
+  "pages/page 21-22.jpg",
+  "pages/page 23-24.jpg",
+  "pages/page 23-24a.jpg",
+  "pages/page 25-26.jpg",
+  "pages/page 27-28.jpg",
+  "pages/page 35-36.jpg",
+  "pages/page 35-36a.jpg",
+  "pages/page 48-49.jpg",
+  "pages/page 49-50.jpg",
+  "pages/page 50-51.jpg"
+];
 var PAGE_RATIO=1.0;
-function buildPages(){
-  var dn=document.querySelector("input[name=dn]:checked").value;
-  var bk=document.getElementById("book");bk.innerHTML="";
-  var tot=spreads.length*2;
-  spreads.forEach(function(src,si){["l","r"].forEach(function(side){
-    var ai=si*2+(side==="l"?0:1);
-    var den=(dn==="mixed")?(ai===0||ai===tot-1?"hard":"soft"):dn;
-    var d=document.createElement("div");d.className="page";d.setAttribute("data-density",den);
-    var i=document.createElement("div");i.className="ph "+side;i.style.backgroundImage="url("+JSON.stringify(src)+")";
-    d.appendChild(i);bk.appendChild(d);});});
+var coverData = { files: [], type: 'none', width: 0, height: 0 };
+var spineMode = 'flat'; // Locked to Option 2: Portada Abierta Plana
+var cacheBuster = new Date().getTime();
+
+function loadCovers(callback) {
+  if (coverData.files && coverData.files.length > 0 && coverData.type !== 'none') {
+    setTimeout(callback, 50);
+    return;
+  }
+  fetch('list_covers.php?t=' + cacheBuster)
+    .then(function(res) { return res.json(); })
+    .then(function(files) {
+      if (files && files.length > 0) {
+        coverData.files = files;
+        var backFile = files.find(function(f) { return f.toLowerCase().indexOf('backcover') !== -1; });
+        var frontFile = files.find(function(f) { return f.toLowerCase().indexOf('backcover') === -1; });
+        if (!frontFile && files.length > 0) {
+          frontFile = files[0];
+        }
+        
+        var img = new Image();
+        img.onload = function() {
+          coverData.width = img.width;
+          coverData.height = img.height;
+          coverData.type = (img.width > img.height * 1.2) ? 'spread' : 'single';
+          coverData.frontFile = frontFile;
+          coverData.backFile = backFile || null;
+          callback();
+        };
+        img.onerror = function() {
+          coverData.type = 'none';
+          callback();
+        };
+        img.src = frontFile + "?t=" + cacheBuster;
+      } else {
+        coverData.type = 'none';
+        callback();
+      }
+    })
+    .catch(function(err) {
+      console.warn("Could not load covers list from PHP:", err);
+      coverData.type = 'none';
+      callback();
+    });
 }
-function calcSize(){var pw=310,vw=window.innerWidth-pw-22,vh=window.innerHeight-130;var w=Math.min(Math.floor(vw/2),Math.floor(vh/PAGE_RATIO),580);return{w:w,h:Math.round(w*PAGE_RATIO)};}
+
+function buildPages(){
+  var coverDn = "hard"; // Portada y guardas rígidas
+  var innerDn = "hard"; // Hojas del interior rígidas también
+  var bk = document.getElementById("book"); bk.innerHTML = "";
+  var liningSrc = "first-last/lining.jpg";
+  
+  if (coverData.type === 'spread') {
+    // 1. Portada completa abierta de inicio (Page 0 y Page 1)
+    ["l","r"].forEach(function(side){
+      var d = document.createElement("div");
+      d.className = "page";
+      d.setAttribute("data-density", coverDn);
+      var imgDiv = document.createElement("div");
+      imgDiv.className = "ph " + side;
+      imgDiv.style.backgroundImage = "url(" + JSON.stringify(coverData.frontFile + "?t=" + cacheBuster) + ")";
+      d.appendChild(imgDiv);
+      bk.appendChild(d);
+    });
+
+    // 2. Primeras 2 páginas de guarda (Lining spread - first-last/lining.jpg)
+    ["l","r"].forEach(function(side){
+      var gradPage = document.createElement("div");
+      gradPage.className = "page";
+      gradPage.setAttribute("data-density", coverDn);
+      var imgDiv = document.createElement("div");
+      imgDiv.className = "ph " + side;
+      imgDiv.style.backgroundImage = "url(" + JSON.stringify(liningSrc + "?t=" + cacheBuster) + ")";
+      gradPage.appendChild(imgDiv);
+      bk.appendChild(gradPage);
+    });
+
+    // 3. Páginas del directorio pages/
+    spreads.forEach(function(src, si){
+      ["l","r"].forEach(function(side){
+        var d = document.createElement("div");
+        d.className = "page";
+        d.setAttribute("data-density", innerDn);
+        var imgDiv = document.createElement("div");
+        imgDiv.className = "ph " + side;
+        imgDiv.style.backgroundImage = "url(" + JSON.stringify(src + "?t=" + cacheBuster) + ")";
+        d.appendChild(imgDiv);
+        bk.appendChild(d);
+      });
+    });
+
+    // 4. Últimas 2 páginas de guarda (Lining spread - first-last/lining.jpg)
+    ["l","r"].forEach(function(side){
+      var gradPage = document.createElement("div");
+      gradPage.className = "page";
+      gradPage.setAttribute("data-density", coverDn);
+      var imgDiv = document.createElement("div");
+      imgDiv.className = "ph " + side;
+      imgDiv.style.backgroundImage = "url(" + JSON.stringify(liningSrc + "?t=" + cacheBuster) + ")";
+      gradPage.appendChild(imgDiv);
+      bk.appendChild(gradPage);
+    });
+
+  } else {
+    // Portada cuadrada (Single cover - showCover: true)
+    
+    // 1. Portada (Front Cover - Page 0)
+    var coverPage = document.createElement("div");
+    coverPage.className = "page";
+    coverPage.setAttribute("data-density", coverDn);
+    var imgDiv = document.createElement("div");
+    imgDiv.className = "ph";
+    imgDiv.style.backgroundImage = "url(" + JSON.stringify(coverData.frontFile + "?t=" + cacheBuster) + ")";
+    imgDiv.style.width = "100%";
+    imgDiv.style.height = "100%";
+    imgDiv.style.backgroundSize = "contain";
+    imgDiv.style.backgroundPosition = "center center";
+    imgDiv.style.backgroundRepeat = "no-repeat";
+    coverPage.appendChild(imgDiv);
+    bk.appendChild(coverPage);
+
+    // 2. Primeras 2 páginas de guarda (Lining spread - Page 1 & 2)
+    ["l","r"].forEach(function(side){
+      var gradPage = document.createElement("div");
+      gradPage.className = "page";
+      gradPage.setAttribute("data-density", coverDn);
+      var imgDiv = document.createElement("div");
+      imgDiv.className = "ph " + side;
+      imgDiv.style.backgroundImage = "url(" + JSON.stringify(liningSrc + "?t=" + cacheBuster) + ")";
+      gradPage.appendChild(imgDiv);
+      bk.appendChild(gradPage);
+    });
+
+    // 3. Páginas del directorio pages/ (Pages 3 to 42)
+    spreads.forEach(function(src, si){
+      ["l","r"].forEach(function(side){
+        var d = document.createElement("div");
+        d.className = "page";
+        d.setAttribute("data-density", innerDn);
+        var imgDiv = document.createElement("div");
+        imgDiv.className = "ph " + side;
+        imgDiv.style.backgroundImage = "url(" + JSON.stringify(src + "?t=" + cacheBuster) + ")";
+        d.appendChild(imgDiv);
+        bk.appendChild(d);
+      });
+    });
+
+    // 4. Últimas 2 páginas de guarda (Lining spread - Page 43 & 44)
+    ["l","r"].forEach(function(side){
+      var gradPage = document.createElement("div");
+      gradPage.className = "page";
+      gradPage.setAttribute("data-density", coverDn);
+      var imgDiv = document.createElement("div");
+      imgDiv.className = "ph " + side;
+      imgDiv.style.backgroundImage = "url(" + JSON.stringify(liningSrc + "?t=" + cacheBuster) + ")";
+      gradPage.appendChild(imgDiv);
+      bk.appendChild(gradPage);
+    });
+
+    // 5. Contraportada (Back Cover - Page 45)
+    var backCoverPage = document.createElement("div");
+    backCoverPage.className = "page";
+    backCoverPage.setAttribute("data-density", coverDn);
+    if (coverData.backFile) {
+      var imgDiv = document.createElement("div");
+      imgDiv.className = "ph";
+      imgDiv.style.backgroundImage = "url(" + JSON.stringify(coverData.backFile + "?t=" + cacheBuster) + ")";
+      imgDiv.style.width = "100%";
+      imgDiv.style.height = "100%";
+      imgDiv.style.backgroundSize = "contain";
+      imgDiv.style.backgroundPosition = "center center";
+      imgDiv.style.backgroundRepeat = "no-repeat";
+      backCoverPage.appendChild(imgDiv);
+    } else {
+      var backCoverContent = document.createElement("div");
+      backCoverContent.className = "back-cover-wine";
+      backCoverContent.innerHTML = '<div class="cover-decoration"></div><div class="cover-subtitle" style="margin-bottom:0">Fin del Libro</div>';
+      backCoverPage.appendChild(backCoverContent);
+    }
+    bk.appendChild(backCoverPage);
+  }
+}
+
+function calcSize(){
+  var vw = window.innerWidth - 40;
+  var vh = window.innerHeight - 150;
+  var w = Math.min(Math.floor(vw/2), Math.floor(vh/PAGE_RATIO));
+  return { w: w, h: Math.round(w*PAGE_RATIO) };
+}
 var pf=null,sp=0,rt=null;
-function gcn(){return document.querySelector("input[name=cn]:checked").value;}
-function gopt(){return{showCover:document.getElementById("o-sc").checked,usePortrait:document.getElementById("o-up").checked,drawShadow:document.getElementById("o-ds").checked,useMouseEvents:document.getElementById("o-me").checked,disableFlipByClick:document.getElementById("o-dc").checked,showPageCorners:document.getElementById("o-pc").checked,mobileScrollSupport:document.getElementById("o-ms").checked,clickEventForward:document.getElementById("o-ce").checked,flippingTime:parseInt(document.getElementById("o-ft").value),maxShadowOpacity:parseFloat(document.getElementById("o-sh").value),swipeDistance:parseInt(document.getElementById("o-sw").value),autoSize:false};}
-function sst(t,c){var e=document.getElementById("sbadge");e.textContent="● "+t;e.style.color=c||"var(--green)";}
+function gcn(){return "top";}
+function gopt(){
+  return {
+    showCover: (coverData.type === 'single'),
+    usePortrait: false,
+    drawShadow: true,
+    useMouseEvents: true,
+    disableFlipByClick: false,
+    showPageCorners: true,
+    mobileScrollSupport: true,
+    clickEventForward: true,
+    flippingTime: 700,
+    maxShadowOpacity: 0.45,
+    swipeDistance: 30,
+    autoSize: false
+  };
+}
+function sst(t,c){
+  var e=document.getElementById("sbadge");
+  if(e){e.textContent="● "+t;e.style.color=c||"var(--green)";}
+}
 function reinit(){
   if(pf){sp=pf.getCurrentPageIndex();try{pf.destroy();}catch(e){}pf=null;}
-  buildPages();var sz=calcSize();var o=gopt();o.width=sz.w;o.height=sz.h;
-  try{pf=new St.PageFlip(document.getElementById("book"),o);pf.loadFromHTML(document.querySelectorAll("#book .page"));
-    ae();sst("Activo","var(--green)");
-    setTimeout(function(){if(sp>0)pf.turnToPage(sp);ui();},200);
-    le("init","{pages:"+spreads.length*2+",size:"+sz.w+"x"+sz.h+"}");
-  }catch(err){sst("Error","var(--red)");le("ERROR",err.message);}
+  var container = document.getElementById("book-container");
+  if(container) {
+    container.innerHTML = '<div id="book"></div>';
+  }
+  loadCovers(function() {
+    buildPages();var sz=calcSize();var o=gopt();o.width=sz.w;o.height=sz.h;
+    try{pf=new St.PageFlip(document.getElementById("book"),o);pf.loadFromHTML(document.querySelectorAll("#book .page"));
+      ae();sst("Activo","var(--green)");
+      setTimeout(function(){if(sp>0)pf.turnToPage(sp);ui();},200);
+    }catch(err){sst("Error","var(--red)");}
+  });
 }
-function sr(){clearTimeout(rt);rt=setTimeout(reinit,700);}
 var ec={flip:"#c9a84c",changeOrientation:"#4c8fcf",changeState:"#9b6bcf",update:"#4caf82",init:"#4caf82",ERROR:"#cf6b4c"};
 function ae(){if(!pf)return;
   pf.on("flip",function(e){setTimeout(ui,50);le("flip","{page:"+e.data+"}");});
@@ -295,32 +524,83 @@ function ae(){if(!pf)return;
   pf.on("changeState",function(e){le("changeState",e.data);});
   pf.on("update",function(){setTimeout(ui,50);le("update","{}");});
 }
-function le(n,d){var log=document.getElementById("elog");var now=new Date();var t=now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0")+":"+now.getSeconds().toString().padStart(2,"0");var el=document.createElement("div");el.className="ev";el.innerHTML="<span class=et>"+t+"</span><span class=en style=color:"+(ec[n]||"#aaa")+">"+n+"</span><span class=ed>"+d+"</span>";var ph=log.querySelector(".en[style*=muted]");if(ph)ph.parentElement.remove();log.insertBefore(el,log.firstChild);if(log.children.length>50)log.removeChild(log.lastChild);}
-function cl(){document.getElementById("elog").innerHTML="<div class=ev><span class=et>--:--</span><span class=en style=color:var(--muted)>log limpiado</span></div>";}
-function ui(){if(!pf)return;var cur=pf.getCurrentPageIndex(),tot=pf.getPageCount();document.getElementById("pf").style.width=(tot>1?Math.round(cur/(tot-1)*100):0)+"%";document.getElementById("pi").textContent="Pag. "+(Math.floor(cur/2)+1)+" / "+Math.ceil(tot/2);var atStart=(cur<=0),atEnd=(cur>=tot-2);document.getElementById("bp").disabled=atStart;document.getElementById("bf").disabled=atStart;document.getElementById("bn").disabled=atEnd;document.getElementById("bl").disabled=atEnd;}
-function so(v){document.getElementById("out").textContent=(typeof v==="object")?JSON.stringify(v,null,2):String(v);}
-function g(fn){if(!pf){so("Sin instancia activa");return;}fn();}
-function mfn(){g(function(){pf.flipNext(gcn());});}
-function mfp(){g(function(){pf.flipPrev(gcn());});}
-function mtn(){g(function(){pf.turnToNextPage();ui();});}
-function mtp(){g(function(){pf.turnToPrevPage();ui();});}
-function mf(){g(function(){pf.flip(parseInt(document.getElementById("ip").value)||0,gcn());});}
-function mt(){g(function(){pf.turnToPage(parseInt(document.getElementById("ip").value)||0);ui();});}
-function mgci(){g(function(){so(pf.getCurrentPageIndex());});}
-function mgpc(){g(function(){so(pf.getPageCount());});}
-function mhn(){g(function(){so(pf.hasNextPage());});}
-function mhp(){g(function(){so(pf.hasPrevPage());});}
-function mgo(){g(function(){so(pf.getOrientation());});}
-function mgb(){g(function(){so(pf.getBoundsRect());});}
-function mgp(){g(function(){var n=parseInt(document.getElementById("igp").value)||0;var p=pf.getPage(n);so(p?{density:p.getDensity(),state:p.getState()}:"null");});}
-function mr(){g(function(){pf.render();le("render","OK");so("OK");});}
-function mu(){g(function(){pf.updateFromHTML(document.querySelectorAll("#book .page"));le("updateFromHTML","OK");so("OK");});}
-function md(){if(!pf){so("No hay instancia");return;}pf.destroy();pf=null;sst("Destruido","var(--red)");le("destroy","eliminado");so("Destruido. Usa new PageFlip() para recrear.");}
-document.addEventListener("keydown",function(e){if(!pf)return;if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight"||e.key==="ArrowDown")pf.flipNext(gcn());if(e.key==="ArrowLeft"||e.key==="ArrowUp")pf.flipPrev(gcn());if(e.key==="Home"){pf.turnToPage(0);ui();}if(e.key==="End"){pf.turnToPage(pf.getPageCount()-2);ui();}});
-document.getElementById("gr").addEventListener("click",reinit);
+function le(n,d){
+  var log=document.getElementById("elog");
+  if(!log)return;
+  var now=new Date();
+  var t=now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0")+":"+now.getSeconds().toString().padStart(2,"0");
+  var el=document.createElement("div");
+  el.className="ev";
+  el.innerHTML="<span class=et>"+t+"</span><span class=en style=color:"+(ec[n]||"#aaa")+">"+n+"</span><span class=ed>"+d+"</span>";
+  var ph=log.querySelector(".en[style*=muted]");
+  if(ph)ph.parentElement.remove();
+  log.insertBefore(el,log.firstChild);
+  if(log.children.length>50)log.removeChild(log.lastChild);
+}
+function ui(){
+  if(!pf)return;
+  var cur=pf.getCurrentPageIndex(),tot=pf.getPageCount();
+  document.getElementById("pf").style.width=(tot>1?Math.round(cur/(tot-1)*100):0)+"%";
+  var pageText = "";
+  if (cur === 0) {
+    pageText = "Portada";
+  } else if (cur >= tot - 1) {
+    pageText = "Contraportada";
+  } else {
+    pageText = "Págs. " + cur + " - " + (cur + 1);
+  }
+  document.getElementById("pi").textContent = pageText;
+  var atStart = (cur <= 0);
+  var atEnd = (cur >= tot - 2);
+  document.getElementById("bp").disabled=atStart;
+  document.getElementById("bf").disabled=atStart;
+  document.getElementById("bn").disabled=atEnd;
+  document.getElementById("bl").disabled=atEnd;
+  
+  var innerSpine = document.getElementById("inner-spine-overlay");
+  if (!innerSpine) {
+    innerSpine = document.createElement("div");
+    innerSpine.id = "inner-spine-overlay";
+    innerSpine.className = "inner-spine";
+    document.getElementById("book-container").appendChild(innerSpine);
+  }
+  innerSpine.style.display = (spineMode === 'inner' && cur > 0 && cur < tot - 1) ? "block" : "none";
+
+  var flatSpine = document.getElementById("flat-spine-overlay");
+  if (!flatSpine) {
+    flatSpine = document.createElement("div");
+    flatSpine.id = "flat-spine-overlay";
+    flatSpine.className = "flat-spine";
+    document.getElementById("book-container").appendChild(flatSpine);
+  }
+  if (coverData.type === 'spread' && cur === 0) {
+    var bookEl = document.getElementById("book");
+    var bookWidth = bookEl.offsetWidth;
+    var spineWidth = Math.round(bookWidth * 0.028);
+    flatSpine.style.width = spineWidth + "px";
+    flatSpine.style.display = "block";
+  } else {
+    flatSpine.style.display = "none";
+  }
+}
+document.addEventListener("keydown",function(e){if(!pf)return;if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight"||e.key==="ArrowDown")pf.flipNext(gcn());if(e.key==="ArrowLeft"||e.key==="ArrowUp")pf.flipPrev(gcn());if(e.key==="Home"){pf.turnToPage(0);ui();}if(e.key==="End"){pf.turnToPage(pf.getSettings().showCover ? pf.getPageCount()-1 : pf.getPageCount()-2);ui();}});
 document.getElementById("bp").addEventListener("click",function(){if(pf)pf.flipPrev(gcn());});
 document.getElementById("bn").addEventListener("click",function(){if(pf)pf.flipNext(gcn());});
 document.getElementById("bf").addEventListener("click",function(){if(pf){pf.turnToPage(0);ui();}});
-document.getElementById("bl").addEventListener("click",function(){if(pf){pf.turnToPage(pf.getPageCount()-2);ui();}});
+document.getElementById("bl").addEventListener("click",function(){if(pf){pf.turnToPage(pf.getSettings().showCover ? pf.getPageCount()-1 : pf.getPageCount()-2);ui();}});
 window.addEventListener("DOMContentLoaded",reinit);
+var resizeTimeout;
+window.addEventListener("resize", function() {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(reinit, 300);
+});
+window.onerror = function(message, source, lineno, colno, error) {
+  var file = source ? source.split('/').pop() : 'unknown';
+  if (typeof le === 'function') {
+    le("ERROR", message + " (" + file + ":" + lineno + ")");
+  } else {
+    console.error(message, source, lineno);
+  }
+  return false;
+};
 </script></body></html>
